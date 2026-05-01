@@ -9,8 +9,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <nav className="h-screen flex">
-      <div className="p-4 w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14%]">
+    <div className="h-screen flex">
+      <section className="p-4 w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14%]">
         <Link
           href={"/"}
           className="flex items-center justify-center lg:justify-start gap-2"
@@ -19,12 +19,12 @@ export default function DashboardLayout({
           <span className="hidden lg:block">Sistema escolar</span>
         </Link>
         <Menu />
-      </div>
+      </section>
       {/*Right side */}
-      <div className="w-[86%] md:w-[92%] lg:w-[84%] xl:w-[86%] bg-[#F7F8FA] overflow-scroll">
+      <section className="w-[86%] md:w-[92%] lg:w-[84%] xl:w-[86%] bg-[#F7F8FA] overflow-scroll">
         <Navbar />
         {children}
-      </div>
-    </nav>
+      </section>
+    </div>
   );
 }
