@@ -1,3 +1,5 @@
+export const role = "admin";
+
 export const menuItems = [
   {
     title: "Menú",
@@ -255,5 +257,128 @@ export const calendarEvents = [
     allDay: false,
     start: new Date(2026, 4, 8, 14, 0),
     end: new Date(2026, 4, 8, 14, 45),
+  },
+];
+
+export const teachersData = [
+  {
+    id: 1,
+    teacherId: "7894561230",
+    name: "Carlos Mendoza",
+    email: "carlos.mendoza@gmail.com",
+    photo:
+      "https://images.pexels.com/photos/2888150/pexels-photo-2888150.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    phone: "6121234567",
+    subjects: ["Matemáticas", "Geometría"],
+    classes: ["1B", "2A", "3C"],
+    address: "Av. Insurgentes 123, Ciudad de México, México",
+  },
+  {
+    id: 2,
+    teacherId: "4561237890",
+    name: "María Fernanda López",
+    email: "maria.lopez@gmail.com",
+    photo:
+      "https://images.pexels.com/photos/936126/pexels-photo-936126.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    phone: "5512345678",
+    subjects: ["Física", "Química"],
+    classes: ["5A", "4B", "3C"],
+    address: "Calle 45 #210, Ciudad de México, México",
+  },
+  {
+    id: 3,
+    teacherId: "3216549870",
+    name: "José Ramírez",
+    email: "jose.ramirez@gmail.com",
+    photo:
+      "https://images.pexels.com/photos/428328/pexels-photo-428328.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    phone: "9987654321",
+    subjects: ["Biología"],
+    classes: ["5A", "4B", "3C"],
+    address: "Av. Siempre Viva 742, Ciudad de México, México",
+  },
+  {
+    id: 4,
+    teacherId: "1597534862",
+    name: "Luis Herrera",
+    email: "luis.herrera@gmail.com",
+    photo:
+      "https://images.pexels.com/photos/1187765/pexels-photo-1187765.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    phone: "3412345678",
+    subjects: ["Historia"],
+    classes: ["5A", "4B", "3C"],
+    address: "Calle San Martín 456, Ciudad de México, México",
+  },
+  {
+    id: 5,
+    teacherId: "8523697410",
+    name: "Ana Torres",
+    email: "ana.torres@gmail.com",
+    photo:
+      "https://images.pexels.com/photos/1102341/pexels-photo-1102341.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    phone: "2223456789",
+    subjects: ["Música", "Historia"],
+    classes: ["5A", "4B", "3C"],
+    address: "Av. Reforma 789, Ciudad de México, México",
+  },
+  {
+    id: 6,
+    teacherId: "9632587410",
+    name: "Sofía Castillo",
+    email: "sofia.castillo@gmail.com",
+    photo:
+      "https://images.pexels.com/photos/712513/pexels-photo-712513.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    phone: "8091234567",
+    subjects: ["Física"],
+    classes: ["5A", "4B", "3C"],
+    address: "Calle Duarte 321, Ciudad de México, México",
+  },
+  {
+    id: 7,
+    teacherId: "1472583690",
+    name: "Diego Morales",
+    email: "diego.morales@gmail.com",
+    photo:
+      "https://images.pexels.com/photos/1438081/pexels-photo-1438081.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    phone: "50312345678",
+    subjects: ["Inglés", "Español"],
+    classes: ["5A", "4B", "3C"],
+    address: "Colonia Escalón, Ciudad de México, México",
+  },
+  {
+    id: 8,
+    teacherId: "3692581470",
+    name: "Valentina Rojas",
+    email: "valentina.rojas@gmail.com",
+    photo:
+      "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    phone: "56912345678",
+    subjects: ["Matemáticas", "Geometría"],
+    classes: ["5A", "4B", "3C"],
+    address: "Av. Providencia 1234, Ciudad de México, México",
+  },
+  {
+    id: 9,
+    teacherId: "2581473690",
+    name: "Ricardo Gómez",
+    email: "ricardo.gomez@gmail.com",
+    photo:
+      "https://images.pexels.com/photos/842980/pexels-photo-842980.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    phone: "50498765432",
+    subjects: ["Literatura", "Inglés"],
+    classes: ["5A", "4B", "3C"],
+    address: "Colonia Palmira, Ciudad de México, México",
+  },
+  {
+    id: 10,
+    teacherId: "7412589630",
+    name: "Andrés Paredes",
+    email: "andres.paredes@gmail.com",
+    photo:
+      "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    phone: "593987654321",
+    subjects: ["Biología"],
+    classes: ["5A", "4B", "3C"],
+    address: "Av. Amazonas 456, Ciudad de México, México",
   },
 ];

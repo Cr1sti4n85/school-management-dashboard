@@ -1,10 +1,10 @@
-import { menuItems } from "@/lib/data";
+import { menuItems, role } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 
 const Menu = () => {
   //TODO: obtain user role from DB
-  const role = "admin";
+
   return (
     <div className="mt-4 text-sm">
       {menuItems.map((section) => (
