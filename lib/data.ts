@@ -36,13 +36,13 @@ export const menuItems = [
       },
       {
         icon: "/class.png",
-        label: "Cursos",
+        label: "Salones",
         href: "/list/classes",
         visible: ["admin", "teacher"],
       },
       {
         icon: "/lesson.png",
-        label: "Lecciones",
+        label: "Clases",
         href: "/list/lessons",
         visible: ["admin", "teacher"],
       },
@@ -578,5 +578,194 @@ export const parentsData = [
     email: "anaflores@gmail.com",
     phone: "1234567890",
     address: "Av. Chapultepec 250, Cuauhtémoc, Ciudad de México",
+  },
+];
+
+export const subjectsData = [
+  {
+    id: 1,
+    name: "Matemáticas",
+    teachers: ["Alice Phelps", "Russell Davidson"],
+  },
+  {
+    id: 2,
+    name: "Inglés",
+    teachers: ["Manuel Becker", "Eddie Chavez"],
+  },
+  {
+    id: 3,
+    name: "Física",
+    teachers: ["Lola Newman", "Darrell Delgado"],
+  },
+  {
+    id: 4,
+    name: "Química",
+    teachers: ["Nathan Kelly", "Benjamin Snyder"],
+  },
+  {
+    id: 5,
+    name: "Biología",
+    teachers: ["Alma Benson", "Lina Collier"],
+  },
+  {
+    id: 6,
+    name: "Historia",
+    teachers: ["Hannah Bowman", "Betty Obrien"],
+  },
+  {
+    id: 7,
+    name: "Geografía",
+    teachers: ["Lora French", "Sue Brady"],
+  },
+  {
+    id: 8,
+    name: "Artes",
+    teachers: ["Harriet Alvarado", "Mayme Keller"],
+  },
+  {
+    id: 9,
+    name: "Música",
+    teachers: ["Gertrude Roy", "Rosa Singleton"],
+  },
+  {
+    id: 10,
+    name: "Literatura",
+    teachers: ["Effie Lynch", "Brett Flowers"],
+  },
+];
+
+export const classesData = [
+  {
+    id: 1,
+    name: "1A",
+    capacity: 20,
+    grade: 1,
+    supervisor: "Joseph Padilla",
+  },
+  {
+    id: 2,
+    name: "2B",
+    capacity: 22,
+    grade: 2,
+    supervisor: "Blake Joseph",
+  },
+  {
+    id: 3,
+    name: "3C",
+    capacity: 20,
+    grade: 3,
+    supervisor: "Tom Bennett",
+  },
+  {
+    id: 4,
+    name: "4B",
+    capacity: 18,
+    grade: 4,
+    supervisor: "Aaron Collins",
+  },
+  {
+    id: 5,
+    name: "5A",
+    capacity: 16,
+    grade: 5,
+    supervisor: "Iva Frank",
+  },
+  {
+    id: 6,
+    name: "5B",
+    capacity: 20,
+    grade: 5,
+    supervisor: "Leila Santos",
+  },
+  {
+    id: 7,
+    name: "7A",
+    capacity: 18,
+    grade: 7,
+    supervisor: "Carrie Walton",
+  },
+  {
+    id: 8,
+    name: "6B",
+    capacity: 22,
+    grade: 6,
+    supervisor: "Christopher Butler",
+  },
+  {
+    id: 9,
+    name: "6C",
+    capacity: 18,
+    grade: 6,
+    supervisor: "Marc Miller",
+  },
+  {
+    id: 10,
+    name: "6D",
+    capacity: 20,
+    grade: 6,
+    supervisor: "Ophelia Marsh",
+  },
+];
+
+export const lessonsData = [
+  {
+    id: 1,
+    subject: "Matemáticas",
+    class: "1A",
+    teacher: "Tommy Wise",
+  },
+  {
+    id: 2,
+    subject: "Inglés",
+    class: "2A",
+    teacher: "Rhoda Frank",
+  },
+  {
+    id: 3,
+    subject: "Ciencias",
+    class: "3A",
+    teacher: "Della Dunn",
+  },
+  {
+    id: 4,
+    subject: "Ciencias Sociales",
+    class: "1B",
+    teacher: "Bruce Rodriguez",
+  },
+  {
+    id: 5,
+    subject: "Artes",
+    class: "4A",
+    teacher: "Birdie Butler",
+  },
+  {
+    id: 6,
+    subject: "Música",
+    class: "5A",
+    teacher: "Bettie Oliver",
+  },
+  {
+    id: 7,
+    subject: "Historia",
+    class: "6A",
+    teacher: "Herman Howard",
+  },
+  {
+    id: 8,
+    subject: "Geografía",
+    class: "6B",
+    teacher: "Lucinda Thomas",
+  },
+  {
+    id: 9,
+    subject: "Física",
+    class: "6C",
+    teacher: "Ronald Roberts",
+  },
+  {
+    id: 10,
+    subject: "Química",
+    class: "4B",
+    teacher: "Julia Pittman",
   },
 ];
