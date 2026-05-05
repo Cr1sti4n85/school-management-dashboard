@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const SingleTeacherPage = () => {
+const SingleStudentPage = () => {
   return (
     <section className="flex flex-1 p-4 flex-col xl:flex-row gap-4">
       {/* LEFT  */}
@@ -16,14 +16,14 @@ const SingleTeacherPage = () => {
             <div className="w-1/3">
               <Image
                 className="w-36 h-36 rounded-full object-cover"
-                src="https://images.pexels.com/photos/2888150/pexels-photo-2888150.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                src="https://images.pexels.com/photos/936126/pexels-photo-936126.jpeg?auto=compress&cs=tinysrgb&w=1200"
                 alt=""
                 width={144}
                 height={144}
               />
             </div>
             <div className="w-2/3 flex flex-col justify-between gap-4">
-              <h1 className="text-xl font-semibold">Leonardo Sanchez</h1>
+              <h1 className="text-xl font-semibold">Virginia Reginato</h1>
               <p className="text-sm text-gray-500">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam
                 excepturi deleniti{" "}
@@ -54,7 +54,7 @@ const SingleTeacherPage = () => {
                     width={14}
                     height={14}
                   />
-                  <span>rsanchez@example.com</span>
+                  <span>vreginato@example.com</span>
                 </div>
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
                   <Image
@@ -92,8 +92,8 @@ const SingleTeacherPage = () => {
                 className="w-6 h-6"
               />
               <div>
-                <h2 className="text-xl font-semibold">2</h2>
-                <span className="text-sm text-gray-400">Branches</span>
+                <h2 className="text-xl font-semibold">6</h2>
+                <span className="text-sm text-gray-400">Nivel</span>
               </div>
             </div>
             <div className="bg-white p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]">
@@ -105,7 +105,7 @@ const SingleTeacherPage = () => {
                 className="w-6 h-6"
               />
               <div>
-                <h2 className="text-xl font-semibold">6</h2>
+                <h2 className="text-xl font-semibold">12</h2>
                 <span className="text-sm text-gray-400">Clases</span>
               </div>
             </div>
@@ -118,15 +118,15 @@ const SingleTeacherPage = () => {
                 className="w-6 h-6"
               />
               <div>
-                <h2 className="text-xl font-semibold">6</h2>
-                <span className="text-sm text-gray-400">Salones</span>
+                <h2 className="text-xl font-semibold">6A</h2>
+                <span className="text-sm text-gray-400">Salón</span>
               </div>
             </div>
           </div>
         </div>
         {/* BOTTOM  */}
         <div className="mt-4 bg-white rounded-md p-4 h-200">
-          <h2>Calendario del profesor</h2>
+          <h2>Calendario del estudiante</h2>
           <BigCalendar />
         </div>
       </div>
@@ -136,19 +136,19 @@ const SingleTeacherPage = () => {
           <h2 className="text-xl font-semibold">Links</h2>
           <div className="mt-4 flex gap-4 flex-wrap text-xs text-gray-500">
             <Link className="p-3 rounded-md bg-sky-light" href="/">
-              Salones
+              Clases
             </Link>
             <Link className="p-3 rounded-md bg-purple-light" href="/">
-              Estudiantes
+              Maestros
             </Link>
             <Link className="p-3 rounded-md bg-yellow-light" href="/">
-              Clases
+              Tareas
             </Link>
             <Link className="p-3 rounded-md bg-pink-50" href="/">
               Exámenes
             </Link>
             <Link className="p-3 rounded-md bg-sky-pale" href="/">
-              Tareas
+              Resultados
             </Link>
           </div>
         </div>
@@ -159,4 +159,4 @@ const SingleTeacherPage = () => {
   );
 };
 
-export default SingleTeacherPage;
+export default SingleStudentPage;
