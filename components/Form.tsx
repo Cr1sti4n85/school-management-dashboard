@@ -1,3 +1,23 @@
+import { JSX } from "react";
+import z from "zod";
+import { teacherSchema } from "@/zod-schemas/teacher";
+import { studentSchema } from "@/zod-schemas/student";
+import dynamic from "next/dynamic";
+
+const TeacherForm = dynamic(() => import("./forms/TeacherForm"));
+const StudentForm = dynamic(() => import("./forms/StudentForm"));
+
+const forms: {
+  [key: string]: (type: "create" | "update", data?: unknown) => JSX.Element;
+} = {
+  teacher: (type, data) => (
+    <TeacherForm type={type} data={data as z.infer<typeof teacherSchema>} />
+  ),
+  student: (type, data) => (
+    <StudentForm type={type} data={data as z.infer<typeof studentSchema>} />
+  ),
+};
+
 type Props = {
   table:
     | "teacher"
@@ -14,9 +34,10 @@ type Props = {
     | "announcement";
   type: "create" | "update" | "delete";
   id?: number;
+  data?: unknown;
 };
 
-const Form = ({ type, id, table }: Props) => {
+const Form = ({ type, id, table, data }: Props) => {
   return type === "delete" && id ? (
     <form action="" className="p-4 flex flex-col gap-4">
       <span className="text-center font-medium">
@@ -26,9 +47,9 @@ const Form = ({ type, id, table }: Props) => {
         Eliminar
       </button>
     </form>
-  ) : (
-    "Formulario de creación/actualización"
-  );
+  ) : type === "create" || type === "update" ? (
+    forms[table](type, data)
+  ) : null;
 };
 
 export default Form;
