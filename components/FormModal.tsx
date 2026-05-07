@@ -44,7 +44,7 @@ const FormModal = <T,>({ table, type, data, id }: Props<T>) => {
       {open && (
         <div className="z-50 flex items-center justify-center w-screen h-screen absolute left-0 top-0 bg-black/60">
           <div className="bg-white p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]">
-            <Form table={table} type={type} id={id} />
+            <Form table={table} type={type} id={id} data={data} />
             <div
               className="absolute top-3 right-4 cursor-pointer"
               onClick={() => setOpen(false)}

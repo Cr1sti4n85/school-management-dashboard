@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const teacherSchema = z.object({
+export const studentSchema = z.object({
   username: z
     .string()
     .min(2, { error: "Debe contar con al menos 2 caracteres" })

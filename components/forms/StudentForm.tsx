@@ -11,7 +11,7 @@ type Props = {
   data?: z.infer<typeof teacherSchema>;
 };
 
-const TeacherForm = ({ type, data }: Props) => {
+const StudentForm = ({ type, data }: Props) => {
   const {
     register,
     handleSubmit,
@@ -25,7 +25,7 @@ const TeacherForm = ({ type, data }: Props) => {
   });
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
-      <h1 className="text-xl font-semibold">Registrar nuevo/a maestro/a</h1>
+      <h1 className="text-xl font-semibold">Registrar nuevo/a estudiante</h1>
       <span className="text-xs text-gray-400 font-medium">Autenticación</span>
       <div className="flex justify-between flex-wrap gap-4">
         <InputField
@@ -120,4 +120,4 @@ const TeacherForm = ({ type, data }: Props) => {
   );
 };
 
-export default TeacherForm;
+export default StudentForm;
