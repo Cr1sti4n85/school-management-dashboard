@@ -3,7 +3,6 @@ import BigCalendar from "@/components/BigCalendar";
 import Performance from "@/components/Performance";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 const SingleStudentPage = () => {
   return (

@@ -2,6 +2,7 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+import { Prisma } from "@/generated/prisma/client";
 import { role } from "@/lib/data";
 import { getTeachersAndCount, TeacherList } from "@/lib/queries/teacherQueries";
 
@@ -96,7 +97,11 @@ const TeachersListPage = async ({
 }) => {
   const { page, ...queryParams } = await searchParams;
   const p: number = page ? parseInt(page) : 1;
-  const { data: teachersData, count } = await getTeachersAndCount(p);
+
+  const { data: teachersData, count } = await getTeachersAndCount(
+    p,
+    queryParams,
+  );
   return (
     <section className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
