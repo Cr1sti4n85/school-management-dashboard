@@ -33,7 +33,7 @@ type Props = {
     | "event"
     | "announcement";
   type: "create" | "update" | "delete";
-  id?: number;
+  id?: string;
   data?: unknown;
 };
 
