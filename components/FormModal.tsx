@@ -20,7 +20,7 @@ type Props<T> = {
     | "announcement";
   type: "create" | "update" | "delete";
   data?: T;
-  id?: number;
+  id?: string;
 };
 
 const FormModal = <T,>({ table, type, data, id }: Props<T>) => {
