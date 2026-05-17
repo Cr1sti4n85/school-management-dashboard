@@ -1,6 +1,5 @@
 import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalendar";
-import FormModal from "@/components/FormModal";
 import Performance from "@/components/Performance";
 import Image from "next/image";
 import Link from "next/link";
@@ -146,7 +145,10 @@ const SingleTeacherPage = () => {
             <Link className="p-3 rounded-md bg-sky-light" href="/">
               Salones
             </Link>
-            <Link className="p-3 rounded-md bg-purple-light" href="/">
+            <Link
+              className="p-3 rounded-md bg-purple-light"
+              href={`/list/students?teacherId=${"teacher2"}`}
+            >
               Estudiantes
             </Link>
             <Link className="p-3 rounded-md bg-yellow-light" href="/">
