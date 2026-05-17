@@ -2,22 +2,14 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, studentsData } from "@/lib/data";
+import { role } from "@/lib/data";
+import {
+  getStudentsAndCount,
+  StudentsList,
+} from "@/lib/queries/studentQueries";
 
 import Image from "next/image";
 import Link from "next/link";
-
-type Student = {
-  id: number;
-  studentId: string;
-  name: string;
-  email?: string;
-  phone?: string;
-  photo: string;
-  address: string;
-  grade: number;
-  class: string;
-};
 
 const columns = [
   {
@@ -50,45 +42,58 @@ const columns = [
   },
 ];
 
-const StudentsListPage = () => {
-  const renderRow = (obj: Student) => {
-    return (
-      <tr
-        key={obj.id}
-        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
-      >
-        <td className="flex items-center gap-4 p-4">
-          <Image
-            className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
-            src={obj.photo}
-            alt="photo"
-            width={40}
-            height={40}
-          />
-          <div className="flex flex-col">
-            <h3 className="font-semibold">{obj.name}</h3>
-            <p className="text-xs text-gray-500">{obj.class}</p>
-          </div>
-        </td>
-        <td className="hidden md:table-cell">{obj.studentId}</td>
-        <td className="hidden md:table-cell">{obj.grade}</td>
-        <td className="hidden md:table-cell">{obj.phone}</td>
-        <td className="hidden md:table-cell">{obj.address}</td>
-        <td>
-          <div className="flex items-center gap-2">
-            <Link href={`/teachers/${obj.id}`}>
-              <button className="w-7 h-7 flex items-center justify-center rounded-full bg-sky-light">
-                <Image src="/view.png" alt="view" width={16} height={16} />
-              </button>
-            </Link>
-            {role === "admin" && (
-              <FormModal type="delete" table="student" id={obj.id} />
-            )}
-          </div>
-        </td>
-      </tr>
-    );
-  };
+const renderRow = (obj: StudentsList) => {
+  return (
+    <tr
+      key={obj.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
+    >
+      <td className="flex items-center gap-4 p-4">
+        <Image
+          className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
+          src={obj.img || "/noAvatar.png"}
+          alt="photo"
+          width={40}
+          height={40}
+        />
+        <div className="flex flex-col">
+          <h3 className="font-semibold">{obj.name}</h3>
+          <p className="text-xs text-gray-500">{obj.class.name}</p>
+        </div>
+      </td>
+      <td className="hidden md:table-cell">{obj.username}</td>
+      <td className="hidden md:table-cell">{obj.class.name}</td>
+      <td className="hidden md:table-cell">{obj.phone}</td>
+      <td className="hidden md:table-cell">{obj.address}</td>
+      <td>
+        <div className="flex items-center gap-2">
+          <Link href={`/teachers/${obj.id}`}>
+            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-sky-light">
+              <Image src="/view.png" alt="view" width={16} height={16} />
+            </button>
+          </Link>
+          {role === "admin" && (
+            <FormModal type="delete" table="student" id={obj.id} />
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+};
+
+const StudentsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...queryParams } = await searchParams;
+  const p: number = page ? parseInt(page) : 1;
+
+  const { data: studentsData, count } = await getStudentsAndCount(
+    p,
+    queryParams,
+  );
+
   return (
     <section className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
@@ -110,7 +115,7 @@ const StudentsListPage = () => {
       {/* LIST */}
       <Table columns={columns} renderRow={renderRow} data={studentsData} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination page={p} count={count} />
     </section>
   );
 };
