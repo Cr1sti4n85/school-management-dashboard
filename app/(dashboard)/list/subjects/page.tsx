@@ -2,16 +2,10 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role, subjectsData } from "@/lib/data";
+import { role } from "@/lib/data";
+import { getSubjectsAndCount, SubjectList } from "@/lib/queries/subjectQueries";
 
 import Image from "next/image";
-import Link from "next/link";
-
-type Subject = {
-  id: number;
-  name: string;
-  teachers: string[];
-};
 
 const columns = [
   {
@@ -29,28 +23,42 @@ const columns = [
   },
 ];
 
-const SubjectsListPage = () => {
-  const renderRow = (obj: Subject) => {
-    return (
-      <tr
-        key={obj.id}
-        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
-      >
-        <td className="flex items-center gap-4 p-4">{obj.name}</td>
-        <td className="hidden md:table-cell">{obj.teachers.join(", ")}</td>
-        <td>
-          <div className="flex items-center gap-2">
-            {role === "admin" && (
-              <>
-                <FormModal type="update" table="assignment" data={obj} />
-                <FormModal type="delete" table="assignment" id={obj.id} />
-              </>
-            )}
-          </div>
-        </td>
-      </tr>
-    );
-  };
+const renderRow = (obj: SubjectList) => {
+  return (
+    <tr
+      key={obj.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
+    >
+      <td className="flex items-center gap-4 p-4">{obj.name}</td>
+      <td className="hidden md:table-cell">
+        {obj.teachers.map((teacher) => teacher.name).join(", ")}
+      </td>
+      <td>
+        <div className="flex items-center gap-2">
+          {role === "admin" && (
+            <>
+              <FormModal type="update" table="assignment" data={obj} />
+              <FormModal type="delete" table="assignment" id={obj.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+};
+
+const SubjectsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...queryParams } = await searchParams;
+  const p: number = page ? parseInt(page) : 1;
+
+  const { data: subjectsData, count } = await getSubjectsAndCount(
+    p,
+    queryParams,
+  );
   return (
     <section className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
@@ -72,7 +80,7 @@ const SubjectsListPage = () => {
       {/* LIST */}
       <Table columns={columns} renderRow={renderRow} data={subjectsData} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination page={p} count={count} />
     </section>
   );
 };
