@@ -2,17 +2,10 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { lessonsData, role } from "@/lib/data";
+import { role } from "@/lib/data";
+import { getLessonsAndCount, LessonList } from "@/lib/queries/lessonQueries";
 
 import Image from "next/image";
-import Link from "next/link";
-
-type Lesson = {
-  id: number;
-  subject: string;
-  class: string;
-  teacher: string;
-};
 
 const columns = [
   {
@@ -35,29 +28,40 @@ const columns = [
   },
 ];
 
-const LessonsListPage = () => {
-  const renderRow = (obj: Lesson) => {
-    return (
-      <tr
-        key={obj.id}
-        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
-      >
-        <td className="flex items-center gap-4 p-4">{obj.subject}</td>
-        <td>{obj.class}</td>
-        <td className="hidden md:table-cell">{obj.teacher}</td>
-        <td>
-          <div className="flex items-center gap-2">
-            {role === "admin" && (
-              <>
-                <FormModal type="update" table="assignment" data={obj} />
-                <FormModal type="delete" table="assignment" id={obj.id} />
-              </>
-            )}
-          </div>
-        </td>
-      </tr>
-    );
-  };
+const renderRow = (obj: LessonList) => {
+  return (
+    <tr
+      key={obj.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
+    >
+      <td className="flex items-center gap-4 p-4">{obj.subject.name}</td>
+      <td>{obj.class.name}</td>
+      <td className="hidden md:table-cell">
+        {obj.teacher.name} {obj.teacher.surname}
+      </td>
+      <td>
+        <div className="flex items-center gap-2">
+          {role === "admin" && (
+            <>
+              <FormModal type="update" table="assignment" data={obj} />
+              <FormModal type="delete" table="assignment" id={obj.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+};
+
+const LessonsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...queryParams } = await searchParams;
+  const p: number = page ? parseInt(page) : 1;
+
+  const { data: classesData, count } = await getLessonsAndCount(p, queryParams);
   return (
     <section className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
@@ -77,9 +81,9 @@ const LessonsListPage = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={lessonsData} />
+      <Table columns={columns} renderRow={renderRow} data={classesData} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination count={count} page={p} />
     </section>
   );
 };
