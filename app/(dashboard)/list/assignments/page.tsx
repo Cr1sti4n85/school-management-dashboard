@@ -2,18 +2,13 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { assignmentsData, role } from "@/lib/data";
+import { role } from "@/lib/data";
+import {
+  AssignmentList,
+  getAssignmentsAndCount,
+} from "@/lib/queries/assignmentQueries";
 
 import Image from "next/image";
-import Link from "next/link";
-
-type Assignment = {
-  id: number;
-  subject: string;
-  class: string;
-  teacher: string;
-  dueDate: string;
-};
 
 const columns = [
   {
@@ -39,31 +34,46 @@ const columns = [
     accessor: "actions",
   },
 ];
+const renderRow = (obj: AssignmentList) => {
+  return (
+    <tr
+      key={obj.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
+    >
+      <td className="flex items-center gap-4 p-4">{obj.lesson.subject.name}</td>
+      <td>{obj.lesson.class.name}</td>
+      <td className="hidden md:table-cell">
+        {obj.lesson.teacher.name} {obj.lesson.teacher.surname}
+      </td>
+      <td className="hidden md:table-cell">
+        {new Intl.DateTimeFormat("es-MX").format(obj.dueDate)}
+      </td>
+      <td>
+        <div className="flex items-center gap-2">
+          {role === "admin" && (
+            <>
+              <FormModal type="update" table="assignment" data={obj} />
+              <FormModal type="delete" table="assignment" id={obj.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+};
 
-const AssignmentsListPage = () => {
-  const renderRow = (obj: Assignment) => {
-    return (
-      <tr
-        key={obj.id}
-        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
-      >
-        <td className="flex items-center gap-4 p-4">{obj.subject}</td>
-        <td>{obj.class}</td>
-        <td className="hidden md:table-cell">{obj.teacher}</td>
-        <td className="hidden md:table-cell">{obj.dueDate}</td>
-        <td>
-          <div className="flex items-center gap-2">
-            {role === "admin" && (
-              <>
-                <FormModal type="update" table="assignment" data={obj} />
-                <FormModal type="delete" table="assignment" id={obj.id} />
-              </>
-            )}
-          </div>
-        </td>
-      </tr>
-    );
-  };
+const AssignmentsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...queryParams } = await searchParams;
+  const p: number = page ? parseInt(page) : 1;
+
+  const { data: examsData, count } = await getAssignmentsAndCount(
+    p,
+    queryParams,
+  );
   return (
     <section className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
@@ -83,9 +93,9 @@ const AssignmentsListPage = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={assignmentsData} />
+      <Table columns={columns} renderRow={renderRow} data={examsData} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination page={p} count={count} />
     </section>
   );
 };
