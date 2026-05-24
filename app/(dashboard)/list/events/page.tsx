@@ -3,18 +3,9 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { eventsData, role } from "@/lib/data";
+import { EventList, getEventsAndCount } from "@/lib/queries/eventQueries";
 
 import Image from "next/image";
-import Link from "next/link";
-
-type Event = {
-  id: number;
-  title: string;
-  class: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-};
 
 const columns = [
   {
@@ -47,31 +38,53 @@ const columns = [
   },
 ];
 
-const EventsListPage = () => {
-  const renderRow = (obj: Event) => {
-    return (
-      <tr
-        key={obj.id}
-        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
-      >
-        <td className="flex items-center gap-4 p-4">{obj.title}</td>
-        <td>{obj.class}</td>
-        <td className="hidden md:table-cell">{obj.date}</td>
-        <td className="hidden md:table-cell">{obj.startTime}</td>
-        <td className="hidden md:table-cell">{obj.endTime}</td>
-        <td>
-          <div className="flex items-center gap-2">
-            {role === "admin" && (
-              <>
-                <FormModal type="update" table="assignment" data={obj} />
-                <FormModal type="delete" table="assignment" id={obj.id} />
-              </>
-            )}
-          </div>
-        </td>
-      </tr>
-    );
-  };
+const renderRow = (obj: EventList) => {
+  return (
+    <tr
+      key={obj.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
+    >
+      <td className="flex items-center gap-4 p-4">{obj.title}</td>
+      <td>{obj.class?.name}</td>
+      <td className="hidden md:table-cell">
+        {new Intl.DateTimeFormat("es-MX").format(obj.startTime)}
+      </td>
+      <td className="hidden md:table-cell">
+        {obj.startTime.toLocaleTimeString("es-MX", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })}
+      </td>
+      <td className="hidden md:table-cell">
+        {obj.endTime.toLocaleTimeString("es-MX", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })}
+      </td>
+      <td>
+        <div className="flex items-center gap-2">
+          {role === "admin" && (
+            <>
+              <FormModal type="update" table="assignment" data={obj} />
+              <FormModal type="delete" table="assignment" id={obj.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+};
+const EventsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...queryParams } = await searchParams;
+  const p: number = page ? parseInt(page) : 1;
+
+  const { data: eventsData, count } = await getEventsAndCount(p, queryParams);
   return (
     <section className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
@@ -93,7 +106,7 @@ const EventsListPage = () => {
       {/* LIST */}
       <Table columns={columns} renderRow={renderRow} data={eventsData} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination page={p} count={count} />
     </section>
   );
 };
