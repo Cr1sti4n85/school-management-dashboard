@@ -2,26 +2,15 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { resultsData, role } from "@/lib/data";
+import { role } from "@/lib/data";
+import { getResultsAndCount, ResultList } from "@/lib/queries/resultQueries";
 
 import Image from "next/image";
-import Link from "next/link";
-
-type Result = {
-  id: number;
-  subject: string;
-  class: string;
-  teacher: string;
-  student: string;
-  type: "exam" | "assignment";
-  date: string;
-  score: number;
-};
 
 const columns = [
   {
-    header: "Materia",
-    accessor: "name",
+    header: "Título",
+    accessor: "title",
   },
   {
     header: "Estudiante",
@@ -53,32 +42,46 @@ const columns = [
   },
 ];
 
-const ResultsListPage = () => {
-  const renderRow = (obj: Result) => {
-    return (
-      <tr
-        key={obj.id}
-        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
-      >
-        <td className="flex items-center gap-4 p-4">{obj.subject}</td>
-        <td>{obj.student}</td>
-        <td className="hidden md:table-cell">{obj.score}</td>
-        <td className="hidden md:table-cell">{obj.teacher}</td>
-        <td className="hidden md:table-cell">{obj.class}</td>
-        <td className="hidden md:table-cell">{obj.date}</td>
-        <td>
-          <div className="flex items-center gap-2">
-            {role === "admin" && (
-              <>
-                <FormModal type="update" table="assignment" data={obj} />
-                <FormModal type="delete" table="assignment" id={obj.id} />
-              </>
-            )}
-          </div>
-        </td>
-      </tr>
-    );
-  };
+const renderRow = (obj: ResultList) => {
+  return (
+    <tr
+      key={obj.id}
+      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
+    >
+      <td className="flex items-center gap-4 p-4">{obj.title}</td>
+      <td>
+        {obj.studentName} {obj.studentSurname}
+      </td>
+      <td className="hidden md:table-cell">{obj.score}</td>
+      <td className="hidden md:table-cell">
+        {obj.teacherName} {obj.teacherSurname}
+      </td>
+      <td className="hidden md:table-cell">{obj.className}</td>
+      <td className="hidden md:table-cell">
+        {new Intl.DateTimeFormat("es-MX").format(obj.startTime)}
+      </td>
+      <td>
+        <div className="flex items-center gap-2">
+          {role === "admin" && (
+            <>
+              <FormModal type="update" table="assignment" data={obj} />
+              <FormModal type="delete" table="assignment" id={obj.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+};
+const ResultsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...queryParams } = await searchParams;
+  const p: number = page ? parseInt(page) : 1;
+
+  const { data: resultsData, count } = await getResultsAndCount(p, queryParams);
   return (
     <section className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
@@ -100,7 +103,7 @@ const ResultsListPage = () => {
       {/* LIST */}
       <Table columns={columns} renderRow={renderRow} data={resultsData} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination count={count} page={p} />
     </section>
   );
 };

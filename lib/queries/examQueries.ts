@@ -1,0 +1,69 @@
+import { Prisma, Exam } from "@/generated/prisma/client";
+import { ITEMS_PER_PAGE } from "../constants";
+import { prisma } from "../prisma";
+
+export type ExamList = Exam & {
+  lesson: {
+    subject: { name: string };
+    class: { name: string };
+    teacher: { name: string; surname: string };
+  };
+};
+
+export const getExamsAndCount = async (
+  page: number,
+  queryParams: unknown,
+): Promise<{
+  data: ExamList[];
+  count: number;
+}> => {
+  const query: Prisma.ExamWhereInput = {};
+
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      if (value !== undefined) {
+        switch (key) {
+          case "classId":
+            query.lesson = { classId: parseInt(value) };
+            break;
+          case "teacherId":
+            query.lesson = {
+              teacherId: value,
+            };
+            break;
+
+          case "search":
+            query.lesson = {
+              subject: {
+                name: { contains: value, mode: "insensitive" },
+              },
+            };
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+  const [data, count] = await prisma.$transaction([
+    prisma.exam.findMany({
+      where: query,
+      include: {
+        lesson: {
+          select: {
+            subject: { select: { name: true } },
+            teacher: { select: { name: true, surname: true } },
+            class: { select: { name: true } },
+          },
+        },
+      },
+      take: ITEMS_PER_PAGE,
+      skip: (page - 1) * ITEMS_PER_PAGE,
+    }),
+    prisma.exam.count({
+      where: query,
+    }),
+  ]);
+  return { data, count };
+};
