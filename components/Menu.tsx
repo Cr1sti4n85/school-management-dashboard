@@ -1,9 +1,11 @@
-import { menuItems, role } from "@/lib/data";
+import { menuItems } from "@/lib/data";
+import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 
-const Menu = () => {
-  //TODO: obtain user role from DB
+const Menu = async () => {
+  const user = await currentUser();
+  const role = user?.publicMetadata.role as string;
 
   return (
     <div className="mt-4 text-sm">
