@@ -6,7 +6,7 @@ import {
   AnnouncementList,
   getAnnouncementsAndCount,
 } from "@/lib/queries/announcementQueries";
-import { getSessionRole } from "@/lib/queries/getSession";
+import { getSessionObj } from "@/lib/queries/getSession";
 import Image from "next/image";
 
 const AnnouncementsListPage = async ({
@@ -21,7 +21,7 @@ const AnnouncementsListPage = async ({
     p,
     queryParams,
   );
-  const role = await getSessionRole();
+  const { role } = await getSessionObj();
 
   const columns = [
     {

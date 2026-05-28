@@ -2,12 +2,11 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role } from "@/lib/data";
 import {
   AssignmentList,
   getAssignmentsAndCount,
 } from "@/lib/queries/assignmentQueries";
-import { getSessionRole } from "@/lib/queries/getSession";
+import { getSessionObj } from "@/lib/queries/getSession";
 
 import Image from "next/image";
 
@@ -23,7 +22,7 @@ const AssignmentsListPage = async ({
     p,
     queryParams,
   );
-  const role = await getSessionRole();
+  const { role } = await getSessionObj();
   const columns = [
     {
       header: "Materia",
@@ -43,10 +42,14 @@ const AssignmentsListPage = async ({
       accessor: "dueDate",
       className: "hidden md:table-cell",
     },
-    {
-      header: "Acciones",
-      accessor: "actions",
-    },
+    ...(role === "admin" || role === "teacher"
+      ? [
+          {
+            header: "Acciones",
+            accessor: "action",
+          },
+        ]
+      : []),
   ];
   const renderRow = (obj: AssignmentList) => {
     return (
