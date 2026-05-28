@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"));
 const StudentForm = dynamic(() => import("./forms/StudentForm"));
+const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"));
 
 const forms: {
   [key: string]: (type: "create" | "update", data?: unknown) => JSX.Element;
@@ -15,6 +16,12 @@ const forms: {
   ),
   student: (type, data) => (
     <StudentForm type={type} data={data as z.infer<typeof studentSchema>} />
+  ),
+  announcement: (type, data) => (
+    <AnnouncementForm
+      type={type}
+      data={data as z.infer<typeof announcementSchema>}
+    />
   ),
 };
 
