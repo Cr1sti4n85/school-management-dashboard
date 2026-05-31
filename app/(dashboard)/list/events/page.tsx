@@ -2,80 +2,11 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role } from "@/lib/data";
 import { EventList, getEventsAndCount } from "@/lib/queries/eventQueries";
+import { getSessionObj } from "@/lib/queries/getSession";
 
 import Image from "next/image";
 
-const columns = [
-  {
-    header: "Título",
-    accessor: "title",
-  },
-  {
-    header: "Salón",
-    accessor: "class",
-  },
-
-  {
-    header: "Fecha",
-    accessor: "date",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Inicio",
-    accessor: "startTime",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Término",
-    accessor: "endTime",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Acciones",
-    accessor: "actions",
-  },
-];
-
-const renderRow = (obj: EventList) => {
-  return (
-    <tr
-      key={obj.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
-    >
-      <td className="flex items-center gap-4 p-4">{obj.title}</td>
-      <td>{obj.class?.name}</td>
-      <td className="hidden md:table-cell">
-        {new Intl.DateTimeFormat("es-MX").format(obj.startTime)}
-      </td>
-      <td className="hidden md:table-cell">
-        {obj.startTime.toLocaleTimeString("es-MX", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        })}
-      </td>
-      <td className="hidden md:table-cell">
-        {obj.endTime.toLocaleTimeString("es-MX", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        })}
-      </td>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-              <FormModal type="update" table="assignment" data={obj} />
-              <FormModal type="delete" table="assignment" id={obj.id} />
-            </>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
-};
 const EventsListPage = async ({
   searchParams,
 }: {
@@ -85,6 +16,80 @@ const EventsListPage = async ({
   const p: number = page ? parseInt(page) : 1;
 
   const { data: eventsData, count } = await getEventsAndCount(p, queryParams);
+  const { role } = await getSessionObj();
+  const columns = [
+    {
+      header: "Título",
+      accessor: "title",
+    },
+    {
+      header: "Salón",
+      accessor: "class",
+    },
+
+    {
+      header: "Fecha",
+      accessor: "date",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Inicio",
+      accessor: "startTime",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Término",
+      accessor: "endTime",
+      className: "hidden md:table-cell",
+    },
+    ...(role === "admin"
+      ? [
+          {
+            header: "Acciones",
+            accessor: "actions",
+          },
+        ]
+      : []),
+  ];
+
+  const renderRow = (obj: EventList) => {
+    return (
+      <tr
+        key={obj.id}
+        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
+      >
+        <td className="flex items-center gap-4 p-4">{obj.title}</td>
+        <td>{obj.class?.name || "--"}</td>
+        <td className="hidden md:table-cell">
+          {new Intl.DateTimeFormat("es-MX").format(obj.startTime)}
+        </td>
+        <td className="hidden md:table-cell">
+          {obj.startTime.toLocaleTimeString("es-MX", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })}
+        </td>
+        <td className="hidden md:table-cell">
+          {obj.endTime.toLocaleTimeString("es-MX", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          })}
+        </td>
+        <td>
+          <div className="flex items-center gap-2">
+            {role === "admin" && (
+              <>
+                <FormModal type="update" table="assignment" data={obj} />
+                <FormModal type="delete" table="assignment" id={obj.id} />
+              </>
+            )}
+          </div>
+        </td>
+      </tr>
+    );
+  };
   return (
     <section className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}

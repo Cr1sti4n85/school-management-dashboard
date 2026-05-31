@@ -2,62 +2,10 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role } from "@/lib/data";
 import { ClassList, getClassesAndCount } from "@/lib/queries/classQueries";
+import { getSessionObj } from "@/lib/queries/getSession";
 
 import Image from "next/image";
-
-const columns = [
-  {
-    header: "Salón",
-    accessor: "name",
-  },
-  {
-    header: "Capacidad",
-    accessor: "capacity",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Nivel",
-    accessor: "grade",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Supervisor",
-    accessor: "supervisor",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Acciones",
-    accessor: "actions",
-  },
-];
-
-const renderRow = (obj: ClassList) => {
-  return (
-    <tr
-      key={obj.id}
-      className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
-    >
-      <td className="flex items-center gap-4 p-4">{obj.name}</td>
-      <td className="hidden md:table-cell">{obj.capacity}</td>
-      <td className="hidden md:table-cell">{obj.name[0]}</td>
-      <td className="hidden md:table-cell">
-        {obj.supervisor?.name} {obj.supervisor?.surname}
-      </td>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-              <FormModal type="update" table="assignment" data={obj} />
-              <FormModal type="delete" table="assignment" id={obj.id} />
-            </>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
-};
 
 const ClassesListPage = async ({
   searchParams,
@@ -68,6 +16,63 @@ const ClassesListPage = async ({
   const p: number = page ? parseInt(page) : 1;
 
   const { data: classesData, count } = await getClassesAndCount(p, queryParams);
+  const { role } = await getSessionObj();
+
+  const columns = [
+    {
+      header: "Salón",
+      accessor: "name",
+    },
+    {
+      header: "Capacidad",
+      accessor: "capacity",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Nivel",
+      accessor: "grade",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Supervisor",
+      accessor: "supervisor",
+      className: "hidden md:table-cell",
+    },
+    ...(role === "admin"
+      ? [
+          {
+            header: "Acciones",
+            accessor: "actions",
+          },
+        ]
+      : []),
+  ];
+
+  const renderRow = (obj: ClassList) => {
+    return (
+      <tr
+        key={obj.id}
+        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
+      >
+        <td className="flex items-center gap-4 p-4">{obj.name}</td>
+        <td className="hidden md:table-cell">{obj.capacity}</td>
+        <td className="hidden md:table-cell">{obj.name[0]}</td>
+        <td className="hidden md:table-cell">
+          {obj.supervisor?.name} {obj.supervisor?.surname}
+        </td>
+        <td>
+          <div className="flex items-center gap-2">
+            {role === "admin" && (
+              <>
+                <FormModal type="update" table="assignment" data={obj} />
+                <FormModal type="delete" table="assignment" id={obj.id} />
+              </>
+            )}
+          </div>
+        </td>
+      </tr>
+    );
+  };
   return (
     <section className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
       {/* TOP */}
