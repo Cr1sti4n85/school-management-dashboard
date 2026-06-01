@@ -1,6 +1,7 @@
 import { Prisma } from "@/generated/prisma/client";
 import { ITEMS_PER_PAGE } from "../constants";
 import { prisma } from "../prisma";
+import { getSessionObj } from "./getSession";
 
 export type ResultList = {
   id: number;
@@ -22,6 +23,7 @@ export const getResultsAndCount = async (
   count: number;
 }> => {
   const query: Prisma.ResultWhereInput = {};
+  const { role, userId } = await getSessionObj();
 
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
@@ -51,6 +53,30 @@ export const getResultsAndCount = async (
         }
       }
     }
+  }
+
+  //Role conditions
+  switch (role) {
+    case "admin":
+      break;
+    case "teacher":
+      query.OR = [
+        { exam: { lesson: { teacherId: userId! } } },
+        { assignment: { lesson: { teacherId: userId! } } },
+      ];
+      break;
+
+    case "student":
+      query.studentId = userId!;
+      break;
+
+    case "parent":
+      query.student = {
+        parentId: userId!,
+      };
+      break;
+    default:
+      break;
   }
 
   const [dataResponse, count] = await prisma.$transaction([
