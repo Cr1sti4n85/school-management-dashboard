@@ -29,6 +29,11 @@ const AnnouncementsListPage = async ({
       accessor: "title",
     },
     {
+      header: "Descripción",
+      accessor: "description",
+      className: "hidden md:table-cell",
+    },
+    {
       header: "Salón",
       accessor: "class",
     },
@@ -54,7 +59,8 @@ const AnnouncementsListPage = async ({
         className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-purple-light"
       >
         <td className="flex items-center gap-4 p-4">{obj.title}</td>
-        <td>{obj.class?.name || ""}</td>
+        <td className="hidden md:table-cell">{obj.description || "-"}</td>
+        <td>{obj.class?.name || "-"}</td>
         <td className="hidden md:table-cell">
           {new Intl.DateTimeFormat("es-MX").format(obj.date)}
         </td>

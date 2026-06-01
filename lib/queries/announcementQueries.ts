@@ -1,6 +1,7 @@
 import { Prisma, Announcement, Class } from "@/generated/prisma/client";
 import { ITEMS_PER_PAGE } from "../constants";
 import { prisma } from "../prisma";
+import { getSessionObj } from "./getSession";
 
 export type AnnouncementList = Announcement & { class: Class | null };
 
@@ -12,7 +13,7 @@ export const getAnnouncementsAndCount = async (
   count: number;
 }> => {
   const query: Prisma.AnnouncementWhereInput = {};
-
+  const { role, userId } = await getSessionObj();
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       if (value !== undefined) {
@@ -26,6 +27,21 @@ export const getAnnouncementsAndCount = async (
       }
     }
   }
+
+  // ROLE CONDITIONS
+
+  const roleConditions = {
+    teacher: { lessons: { some: { teacherId: userId! } } },
+    student: { students: { some: { id: userId! } } },
+    parent: { students: { some: { parentId: userId! } } },
+  };
+
+  query.OR = [
+    { classId: null },
+    {
+      class: roleConditions[role as keyof typeof roleConditions] || {},
+    },
+  ];
 
   const [data, count] = await prisma.$transaction([
     prisma.announcement.findMany({
