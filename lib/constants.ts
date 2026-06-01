@@ -28,3 +28,15 @@ export const userTypeMap: { [key: string]: string } = {
   student: "Estudiantes",
   parent: "Padres",
 };
+
+export const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
+export const attendanceMap: {
+  [key: string]: { present: number; absent: number };
+} = {
+  Mon: { present: 0, absent: 0 },
+  Tue: { present: 0, absent: 0 },
+  Wed: { present: 0, absent: 0 },
+  Thu: { present: 0, absent: 0 },
+  Fri: { present: 0, absent: 0 },
+};

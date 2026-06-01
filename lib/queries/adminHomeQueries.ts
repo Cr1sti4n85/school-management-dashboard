@@ -1,4 +1,5 @@
 import { prisma } from "../prisma";
+import { attendanceMap, daysOfWeek } from "@/lib/constants";
 
 type RoleTypes = "admin" | "teacher" | "student" | "parent";
 
@@ -27,4 +28,45 @@ export const getBoysAndGirlsCount = async () => {
     girls,
     total: boys + girls,
   };
+};
+
+export const getAttendance = async () => {
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const daysSinceMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+
+  const lastMonday = new Date(today);
+  lastMonday.setDate(today.getDate() - daysSinceMonday);
+
+  const attendanceData = await prisma.attendance.findMany({
+    where: {
+      date: {
+        gte: lastMonday,
+      },
+    },
+    select: {
+      date: true,
+      present: true,
+    },
+  });
+
+  attendanceData.forEach((record) => {
+    if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+      const dayName = daysOfWeek[dayOfWeek - 1];
+
+      if (record.present) {
+        attendanceMap[dayName].present += 1;
+      } else {
+        attendanceMap[dayName].absent += 1;
+      }
+    }
+  });
+
+  const formattedData = daysOfWeek.map((day) => ({
+    name: day,
+    present: attendanceMap[day].present,
+    absent: attendanceMap[day].absent,
+  }));
+
+  return formattedData;
 };
