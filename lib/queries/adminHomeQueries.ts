@@ -70,3 +70,16 @@ export const getAttendance = async () => {
 
   return formattedData;
 };
+
+export const getCalendarEvents = async (date: Date) => {
+  const dataEvents = await prisma.event.findMany({
+    where: {
+      startTime: {
+        gte: new Date(date.setHours(0, 0, 0, 0)),
+        lt: new Date(date.setHours(23, 59, 59, 999)),
+      },
+    },
+  });
+
+  return dataEvents;
+};
