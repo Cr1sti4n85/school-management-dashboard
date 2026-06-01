@@ -83,3 +83,24 @@ export const getCalendarEvents = async (date: Date) => {
 
   return dataEvents;
 };
+
+export const getAnnouncements = async (role: string, userId: string | null) => {
+  const roleConditions = {
+    teacher: { lessons: { some: { teacherId: userId! } } },
+    student: { students: { some: { id: userId! } } },
+    parent: { students: { some: { parentId: userId! } } },
+  };
+  const announcementsData = await prisma.announcement.findMany({
+    where: {
+      ...(role !== "admin" && {
+        OR: [
+          { classId: null },
+          { class: roleConditions[role as keyof typeof roleConditions] || {} },
+        ],
+      }),
+    },
+    take: 3,
+    orderBy: { date: "desc" },
+  });
+  return announcementsData;
+};
