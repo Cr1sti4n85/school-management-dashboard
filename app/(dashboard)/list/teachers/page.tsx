@@ -2,7 +2,6 @@ import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { role } from "@/lib/data";
 import { getSessionObj } from "@/lib/queries/getSession";
 import { getTeachersAndCount, TeacherList } from "@/lib/queries/teacherQueries";
 

@@ -24,6 +24,7 @@ model Student {
   address     String
   img         String?
   bloodType   String
+  sex         UserSex?            
   createdAt   DateTime     @default(now())
   parentId    String
   parent      Parent       @relation(fields: [parentId], references: [id])
@@ -184,4 +185,9 @@ enum Day {
   WEDNESDAY
   THURSDAY
   FRIDAY
+}
+
+enum UserSex {
+  MALE
+  FEMALE
 }
