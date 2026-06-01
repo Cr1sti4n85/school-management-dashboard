@@ -70,3 +70,37 @@ export const getAttendance = async () => {
 
   return formattedData;
 };
+
+export const getCalendarEvents = async (date: Date) => {
+  const dataEvents = await prisma.event.findMany({
+    where: {
+      startTime: {
+        gte: new Date(date.setHours(0, 0, 0, 0)),
+        lt: new Date(date.setHours(23, 59, 59, 999)),
+      },
+    },
+  });
+
+  return dataEvents;
+};
+
+export const getAnnouncements = async (role: string, userId: string | null) => {
+  const roleConditions = {
+    teacher: { lessons: { some: { teacherId: userId! } } },
+    student: { students: { some: { id: userId! } } },
+    parent: { students: { some: { parentId: userId! } } },
+  };
+  const announcementsData = await prisma.announcement.findMany({
+    where: {
+      ...(role !== "admin" && {
+        OR: [
+          { classId: null },
+          { class: roleConditions[role as keyof typeof roleConditions] || {} },
+        ],
+      }),
+    },
+    take: 3,
+    orderBy: { date: "desc" },
+  });
+  return announcementsData;
+};
