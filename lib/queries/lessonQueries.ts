@@ -7,6 +7,7 @@ import {
 } from "@/generated/prisma/client";
 import { ITEMS_PER_PAGE } from "../constants";
 import { prisma } from "../prisma";
+import { stripTimezone } from "../utils";
 
 export type LessonList = Lesson & { subject: Subject } & { class: Class } & {
   teacher: Teacher;
@@ -76,8 +77,8 @@ export const getTeachersLessons = async (
   });
   const formattedData = data.map((lesson) => ({
     title: lesson.name,
-    start: lesson.startTime,
-    end: lesson.endTime,
+    start: stripTimezone(lesson.startTime),
+    end: stripTimezone(lesson.endTime),
   }));
   return formattedData;
 };
