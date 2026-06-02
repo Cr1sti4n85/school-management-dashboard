@@ -3,13 +3,16 @@ import { Calendar, dayjsLocalizer, View, Views } from "react-big-calendar";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { calendarEvents } from "@/lib/data";
 import { useState } from "react";
 
 dayjs.locale("es");
 const localizer = dayjsLocalizer(dayjs);
 
-const BigCalendar = () => {
+type Props = {
+  lessonsData: { title: string; start: Date; end: Date }[];
+};
+
+const BigCalendar = ({ lessonsData }: Props) => {
   const [view, setView] = useState<View>(Views.WORK_WEEK);
 
   const handleViewChange = (selectedView: View) => {
@@ -18,7 +21,7 @@ const BigCalendar = () => {
   return (
     <Calendar
       localizer={localizer}
-      events={calendarEvents}
+      events={lessonsData}
       startAccessor="start"
       endAccessor="end"
       style={{ height: "98%" }}
