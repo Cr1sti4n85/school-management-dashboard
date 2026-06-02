@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/es";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useState } from "react";
+import { adjustScheduleToCurrentWeek } from "@/lib/utils";
 
 dayjs.locale("es");
 const localizer = dayjsLocalizer(dayjs);
@@ -18,10 +19,13 @@ const BigCalendar = ({ lessonsData }: Props) => {
   const handleViewChange = (selectedView: View) => {
     setView(selectedView);
   };
+
+  const schedule = adjustScheduleToCurrentWeek(lessonsData);
+
   return (
     <Calendar
       localizer={localizer}
-      events={lessonsData}
+      events={schedule}
       startAccessor="start"
       endAccessor="end"
       style={{ height: "98%" }}
