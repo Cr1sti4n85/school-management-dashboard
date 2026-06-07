@@ -7,7 +7,7 @@ import z from "zod";
 import Image from "next/image";
 
 type Props = {
-  type: "create" | "update" | "delete";
+  type: "create" | "update";
   data?: z.infer<typeof teacherSchema>;
 };
 

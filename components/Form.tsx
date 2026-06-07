@@ -3,10 +3,11 @@ import z from "zod";
 import { teacherSchema } from "@/zod-schemas/teacher";
 import { studentSchema } from "@/zod-schemas/student";
 import dynamic from "next/dynamic";
+import { subjectSchema } from "@/zod-schemas/subject";
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"));
 const StudentForm = dynamic(() => import("./forms/StudentForm"));
-const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"));
+const SubjectForm = dynamic(() => import("./forms/SubjectForm"));
 
 const forms: {
   [key: string]: (type: "create" | "update", data?: unknown) => JSX.Element;
@@ -17,11 +18,8 @@ const forms: {
   student: (type, data) => (
     <StudentForm type={type} data={data as z.infer<typeof studentSchema>} />
   ),
-  announcement: (type, data) => (
-    <AnnouncementForm
-      type={type}
-      data={data as z.infer<typeof announcementSchema>}
-    />
+  subject: (type, data) => (
+    <SubjectForm type={type} data={data as z.infer<typeof subjectSchema>} />
   ),
 };
 
