@@ -40,7 +40,7 @@ type Lessons = {
 export const adjustScheduleToCurrentWeek = (lessons: Lessons[]) => {
   const startOfWeek = currentWorkWeek();
 
-  return lessons.map((lesson) => {
+  return lessons?.map((lesson) => {
     const lessonDayOfWeek = lesson.start.getDay();
     const daysFromMonday = lessonDayOfWeek === 0 ? 6 : lessonDayOfWeek - 1;
 

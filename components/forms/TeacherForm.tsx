@@ -5,13 +5,15 @@ import { useForm } from "react-hook-form";
 import InputField from "./InputField";
 import z from "zod";
 import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
 
 type Props = {
-  type: "create" | "update" | "delete";
+  type: "create" | "update";
+  setOpen: Dispatch<SetStateAction<boolean>>;
   data?: z.infer<typeof teacherSchema>;
 };
 
-const TeacherForm = ({ type, data }: Props) => {
+const TeacherForm = ({ type, setOpen, data }: Props) => {
   const {
     register,
     handleSubmit,

@@ -45,3 +45,15 @@ export const getClassesAndCount = async (
   ]);
   return { data, count };
 };
+
+//Get class by student id
+export const getClassByStudentId = async (id: string) => {
+  const singleClass = await prisma.class.findFirst({
+    where: {
+      students: {
+        some: { id },
+      },
+    },
+  });
+  return singleClass;
+};

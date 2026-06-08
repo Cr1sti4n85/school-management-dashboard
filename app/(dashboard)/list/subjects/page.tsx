@@ -51,8 +51,8 @@ const SubjectsListPage = async ({
           <div className="flex items-center gap-2">
             {role === "admin" && (
               <>
-                <FormModal type="update" table="assignment" data={obj} />
-                <FormModal type="delete" table="assignment" id={obj.id} />
+                <FormModal type="update" table="subject" data={obj} />
+                <FormModal type="delete" table="subject" id={obj.id} />
               </>
             )}
           </div>
