@@ -7,11 +7,11 @@ import {
   useTransition,
 } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import InputField from "./InputField";
 import z from "zod";
 import { subjectSchema } from "@/zod-schemas/subject";
-import { createSubject } from "@/lib/actions/subjectActions";
+import { createSubject, updateSubject } from "@/lib/actions/subjectActions";
 import { toast } from "react-toastify";
 
 type Props = {
@@ -26,13 +26,18 @@ const SubjectForm = ({ type, setOpen, data }: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm<z.infer<typeof subjectSchema>>({
-    resolver: zodResolver(subjectSchema),
+    resolver: zodResolver(subjectSchema) as Resolver<
+      z.infer<typeof subjectSchema>
+    >,
   });
 
-  const [state, formAction, pending] = useActionState(createSubject, {
-    success: false,
-    message: "",
-  });
+  const [state, formAction, pending] = useActionState(
+    type === "create" ? createSubject : updateSubject,
+    {
+      success: false,
+      message: "",
+    },
+  );
   const [, startTransition] = useTransition();
 
   useEffect(() => {
@@ -61,6 +66,16 @@ const SubjectForm = ({ type, setOpen, data }: Props) => {
           error={errors.name}
         />
       </div>
+      {data && (
+        <InputField
+          label="Id"
+          name="id"
+          defaultValue={data?.id?.toString()}
+          register={register}
+          error={errors?.id}
+          hidden
+        />
+      )}
       <button
         disabled={pending}
         className="bg-blue-400 text-white p-2 rounded-md"

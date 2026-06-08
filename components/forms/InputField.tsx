@@ -12,6 +12,7 @@ type Props<T extends FieldValues> = {
   register: UseFormRegister<T>;
   name: Path<T>;
   defaultValue?: string;
+  hidden?: boolean;
   error?: FieldError;
   inputProps?: InputHTMLAttributes<HTMLInputElement>;
 };
@@ -22,11 +23,12 @@ const InputField = <T extends FieldValues>({
   register,
   name,
   defaultValue,
+  hidden,
   error,
   inputProps,
 }: Props<T>) => {
   return (
-    <div className="flex flex-col gap-2 w-full md:w-1/4">
+    <div className={hidden ? "hidden" : "flex flex-col gap-2 w-full md:w-1/4"}>
       <label htmlFor={name} className="text-xs text-gray-500">
         {label}
       </label>
