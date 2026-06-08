@@ -4,6 +4,7 @@ import { teacherSchema } from "@/zod-schemas/teacher";
 import { studentSchema } from "@/zod-schemas/student";
 import dynamic from "next/dynamic";
 import { subjectSchema } from "@/zod-schemas/subject";
+import DeleteModal from "./forms/DeleteModal";
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"));
 const StudentForm = dynamic(() => import("./forms/StudentForm"));
@@ -61,14 +62,7 @@ type Props = {
 
 const Form = ({ type, id, table, data, setOpen }: Props) => {
   return type === "delete" && id ? (
-    <form action="" className="p-4 flex flex-col gap-4">
-      <span className="text-center font-medium">
-        Los datos se perderán. ¿Estás seguro que quieres borrar esta {table}?
-      </span>
-      <button className="bg-red-700 text-white py-2 px-4 rounded-md border-md w-max self-center">
-        Eliminar
-      </button>
-    </form>
+    <DeleteModal table={table} setOpen={setOpen} id={id} />
   ) : type === "create" || type === "update" ? (
     forms[table](type, setOpen, data)
   ) : null;
