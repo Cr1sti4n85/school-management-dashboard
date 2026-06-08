@@ -24,3 +24,25 @@ export const createSubject = async (
     return { success: false, message: "Error al crear la materia" };
   }
 };
+
+export const updateSubject = async (
+  initialState: InitialState,
+  data: z.infer<typeof subjectSchema>,
+) => {
+  try {
+    await prisma.subject.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        name: data.name,
+      },
+    });
+
+    revalidatePath("/list/subjects");
+    return { success: true, message: "Materia actualizada correctamente" };
+  } catch (error) {
+    console.log({ error });
+    return { success: false, message: "Error al actualizar la materia" };
+  }
+};
