@@ -41,8 +41,26 @@ export const updateSubject = async (
 
     revalidatePath("/list/subjects");
     return { success: true, message: "Materia actualizada correctamente" };
-  } catch (error) {
-    console.log({ error });
+  } catch {
     return { success: false, message: "Error al actualizar la materia" };
+  }
+};
+
+export const deleteSubject = async (
+  initialState: InitialState,
+  data: FormData,
+) => {
+  const id = data.get("id") as string;
+  console.log({ id });
+  try {
+    await prisma.subject.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    return { success: true, message: "Materia eliminada correctamente" };
+  } catch {
+    return { success: false, message: "Error al eliminar la materia" };
   }
 };
