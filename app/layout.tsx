@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ToastContainer } from "react-toastify";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -30,6 +31,7 @@ export default function RootLayout({
     >
       <body className="h-full flex flex-col">
         <ClerkProvider>{children}</ClerkProvider>
+        <ToastContainer position="bottom-right" theme="dark" />
       </body>
     </html>
   );

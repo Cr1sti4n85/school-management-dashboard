@@ -1,18 +1,26 @@
 "use client";
-import { useActionState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useActionState,
+  useEffect,
+  useTransition,
+} from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import InputField from "./InputField";
 import z from "zod";
 import { subjectSchema } from "@/zod-schemas/subject";
 import { createSubject } from "@/lib/actions/subjectActions";
+import { toast } from "react-toastify";
 
 type Props = {
   type: "create" | "update" | "delete";
+  setOpen: Dispatch<SetStateAction<boolean>>;
   data?: z.infer<typeof subjectSchema>;
 };
 
-const SubjectForm = ({ type, data }: Props) => {
+const SubjectForm = ({ type, setOpen, data }: Props) => {
   const {
     register,
     handleSubmit,
@@ -25,9 +33,19 @@ const SubjectForm = ({ type, data }: Props) => {
     success: false,
     message: "",
   });
+  const [, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (state.success) {
+      toast.success(state.message);
+      setOpen(false);
+    }
+  }, [state, setOpen]);
 
   const onSubmit = handleSubmit((data) => {
-    formAction(data);
+    startTransition(() => {
+      formAction(data);
+    });
   });
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
@@ -43,8 +61,6 @@ const SubjectForm = ({ type, data }: Props) => {
           error={errors.name}
         />
       </div>
-
-      {!state.success && <span>{state.message}</span>}
       <button
         disabled={pending}
         className="bg-blue-400 text-white p-2 rounded-md"
