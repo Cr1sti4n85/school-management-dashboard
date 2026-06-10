@@ -8,11 +8,16 @@ import DeleteModal from "./DeleteModal";
 import { teacherSchema } from "@/zod-schemas/teacher";
 import { studentSchema } from "@/zod-schemas/student";
 import { subjectSchema } from "@/zod-schemas/subject";
-import { SubjectRelatedData } from "@/lib/queries/relatedDataQuery";
+import {
+  ClassRelatedData,
+  SubjectRelatedData,
+} from "@/lib/queries/relatedDataQuery";
+import { classSchema } from "@/zod-schemas/class";
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"));
 const StudentForm = dynamic(() => import("./forms/StudentForm"));
 const SubjectForm = dynamic(() => import("./forms/SubjectForm"));
+const ClassForm = dynamic(() => import("./forms/ClassForm"));
 
 const forms: {
   [key: string]: (
@@ -42,6 +47,14 @@ const forms: {
       setOpen={setOpen}
       data={data as z.infer<typeof subjectSchema>}
       relatedData={relatedData as SubjectRelatedData}
+    />
+  ),
+  class: (type, setOpen, data, relatedData) => (
+    <ClassForm
+      type={type}
+      setOpen={setOpen}
+      data={data as z.infer<typeof classSchema>}
+      relatedData={relatedData as ClassRelatedData}
     />
   ),
 };

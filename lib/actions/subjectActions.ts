@@ -59,7 +59,6 @@ export const deleteSubject = async (
   data: FormData,
 ) => {
   const id = data.get("id") as string;
-  console.log({ id });
   try {
     await prisma.subject.delete({
       where: {
