@@ -8,6 +8,7 @@ import DeleteModal from "./DeleteModal";
 import { teacherSchema } from "@/zod-schemas/teacher";
 import { studentSchema } from "@/zod-schemas/student";
 import { subjectSchema } from "@/zod-schemas/subject";
+import { SubjectRelatedData } from "@/lib/queries/relatedDataQuery";
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"));
 const StudentForm = dynamic(() => import("./forms/StudentForm"));
@@ -18,32 +19,42 @@ const forms: {
     type: "create" | "update",
     setOpen: Dispatch<SetStateAction<boolean>>,
     data?: unknown,
+    relatedData?: unknown,
   ) => JSX.Element;
 } = {
-  teacher: (type, setOpen, data) => (
+  teacher: (type, setOpen, data, relatedData) => (
     <TeacherForm
       type={type}
       setOpen={setOpen}
       data={data as z.infer<typeof teacherSchema>}
     />
   ),
-  student: (type, setOpen, data) => (
+  student: (type, setOpen, data, relatedData) => (
     <StudentForm
       type={type}
       setOpen={setOpen}
       data={data as z.infer<typeof studentSchema>}
     />
   ),
-  subject: (type, setOpen, data) => (
+  subject: (type, setOpen, data, relatedData) => (
     <SubjectForm
       type={type}
       setOpen={setOpen}
       data={data as z.infer<typeof subjectSchema>}
+      relatedData={relatedData as SubjectRelatedData}
     />
   ),
 };
 
-const FormModal = <T,>({ table, type, data, id }: FormProps<T>) => {
+type Props<T, U> = FormProps<T> & { relatedData?: U };
+
+const FormModal = <T, U>({
+  table,
+  type,
+  data,
+  id,
+  relatedData,
+}: Props<T, U>) => {
   const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
     type === "create"
@@ -67,7 +78,7 @@ const FormModal = <T,>({ table, type, data, id }: FormProps<T>) => {
             {type === "delete" && id ? (
               <DeleteModal table={table} setOpen={setOpen} id={id} />
             ) : type === "create" || type === "update" ? (
-              forms[table](type, setOpen, data)
+              forms[table](type, setOpen, data, relatedData)
             ) : null}
             <div
               className="absolute top-3 right-4 cursor-pointer"

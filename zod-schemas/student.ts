@@ -17,7 +17,7 @@ export const studentSchema = z.object({
     .regex(/[^a-zA-Z0-9]/, {
       error: "Debe contener al menos un carácter especial",
     }),
-  firstName: z.string().min(1, { error: "El nombre es obligatorio" }),
+  name: z.string().min(1, { error: "El nombre es obligatorio" }),
   lastName: z.string().min(1, { error: "El apellido es obligatorio" }),
   phone: z.string().regex(/^\d{9}$/, { error: "Número de teléfono no válido" }),
   address: z.string().min(5, { error: "Número de teléfono no válido" }),
