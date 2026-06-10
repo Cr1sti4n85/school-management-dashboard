@@ -61,16 +61,16 @@ const TeacherForm = ({ type, setOpen, data }: Props) => {
         <InputField
           label="Nombre"
           register={register}
-          name="firstName"
-          defaultValue={data?.firstName}
-          error={errors.firstName}
+          name="name"
+          defaultValue={data?.name}
+          error={errors.name}
         />
         <InputField
           label="Apellido"
           register={register}
-          name="lastName"
-          defaultValue={data?.lastName}
-          error={errors.lastName}
+          name="surname"
+          defaultValue={data?.surname}
+          error={errors.surname}
         />
         <InputField
           label="Teléfono"

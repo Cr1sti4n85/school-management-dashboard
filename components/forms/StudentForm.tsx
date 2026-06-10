@@ -1,16 +1,16 @@
 "use client";
-import { teacherSchema } from "@/zod-schemas/teacher";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import InputField from "./InputField";
 import z from "zod";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
+import { studentSchema } from "@/zod-schemas/student";
 
 type Props = {
   type: "create" | "update" | "delete";
   setOpen: Dispatch<SetStateAction<boolean>>;
-  data?: z.infer<typeof teacherSchema>;
+  data?: z.infer<typeof studentSchema>;
 };
 
 const StudentForm = ({ type, setOpen, data }: Props) => {
@@ -18,8 +18,8 @@ const StudentForm = ({ type, setOpen, data }: Props) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof teacherSchema>>({
-    resolver: zodResolver(teacherSchema),
+  } = useForm<z.infer<typeof studentSchema>>({
+    resolver: zodResolver(studentSchema),
   });
 
   const onSubmit = handleSubmit((data) => {
@@ -61,9 +61,9 @@ const StudentForm = ({ type, setOpen, data }: Props) => {
         <InputField
           label="Nombre"
           register={register}
-          name="firstName"
-          defaultValue={data?.firstName}
-          error={errors.firstName}
+          name="name"
+          defaultValue={data?.name}
+          error={errors.name}
         />
         <InputField
           label="Apellido"
