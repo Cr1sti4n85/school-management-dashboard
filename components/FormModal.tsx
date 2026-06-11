@@ -85,7 +85,13 @@ const FormModal = <T, U>({
         className={`flex items-center justify-center rounded-full ${size} ${bgColor}`}
         onClick={() => setOpen(true)}
       >
-        <Image src={`/${type}.png`} alt="action icon" width={16} height={16} />
+        <Image
+          src={`/${type}.png`}
+          alt="action icon"
+          width={20}
+          height={20}
+          className="cursor-pointer"
+        />
       </button>
       {open && (
         <div className="z-50 flex items-center justify-center w-screen h-screen absolute left-0 top-0 bg-black/60">

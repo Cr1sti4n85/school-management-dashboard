@@ -82,14 +82,16 @@ const TeacherForm = ({ type, setOpen, data, relatedData }: Props) => {
           defaultValue={data?.email}
           error={errors.email}
         />
-        <InputField
-          label="Password"
-          register={register}
-          name="password"
-          type="password"
-          defaultValue={data?.password}
-          error={errors.password}
-        />
+        {type === "create" && (
+          <InputField
+            label="Password"
+            register={register}
+            name="password"
+            type="password"
+            defaultValue={data?.password}
+            error={errors.password}
+          />
+        )}
       </div>
       <span className="text-xs text-gray-400 font-medium">
         Información personal
@@ -135,9 +137,19 @@ const TeacherForm = ({ type, setOpen, data, relatedData }: Props) => {
           register={register}
           name="birthday"
           type="date"
-          defaultValue={data?.birthday.toString()}
+          defaultValue={data?.birthday.toISOString().split("T")[0]}
           error={errors.birthday}
         />
+        {data && (
+          <InputField
+            label="Id"
+            name="id"
+            defaultValue={data?.id?.toString()}
+            register={register}
+            error={errors?.id}
+            hidden
+          />
+        )}
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Materias</label>
           <select
