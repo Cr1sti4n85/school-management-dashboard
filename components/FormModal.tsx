@@ -11,6 +11,7 @@ import { subjectSchema } from "@/zod-schemas/subject";
 import {
   ClassRelatedData,
   SubjectRelatedData,
+  TeacherRelatedData,
 } from "@/lib/queries/relatedDataQuery";
 import { classSchema } from "@/zod-schemas/class";
 
@@ -32,6 +33,7 @@ const forms: {
       type={type}
       setOpen={setOpen}
       data={data as z.infer<typeof teacherSchema>}
+      relatedData={relatedData as TeacherRelatedData}
     />
   ),
   student: (type, setOpen, data, relatedData) => (

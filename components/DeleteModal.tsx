@@ -2,6 +2,7 @@
 
 import { deleteClass } from "@/lib/actions/classActions";
 import { deleteSubject } from "@/lib/actions/subjectActions";
+import { deleteTeacher } from "@/lib/actions/teacherActions";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
@@ -10,7 +11,7 @@ import { toast } from "react-toastify";
 const deleteActionMap = {
   subject: deleteSubject,
   class: deleteClass,
-  teacher: deleteSubject,
+  teacher: deleteTeacher,
   student: deleteSubject,
   exam: deleteSubject,
   parent: deleteSubject,
