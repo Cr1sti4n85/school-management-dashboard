@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteClass } from "@/lib/actions/classActions";
 import { deleteSubject } from "@/lib/actions/subjectActions";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useActionState, useEffect } from "react";
@@ -8,7 +9,7 @@ import { toast } from "react-toastify";
 //TODO: update this action map
 const deleteActionMap = {
   subject: deleteSubject,
-  class: deleteSubject,
+  class: deleteClass,
   teacher: deleteSubject,
   student: deleteSubject,
   exam: deleteSubject,
