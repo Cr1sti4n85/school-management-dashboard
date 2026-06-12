@@ -82,7 +82,7 @@ export const updateTeacher = async (
         bloodType: data.bloodType,
         birthday: data.birthday,
         subjects: {
-          connect: data.subjects?.map((subjectId: string) => ({
+          set: data.subjects?.map((subjectId: string) => ({
             id: parseInt(subjectId),
           })),
         },
@@ -102,6 +102,9 @@ export const deleteTeacher = async (
 ) => {
   const id = data.get("id") as string;
   try {
+    const client = await clerkClient();
+    await client.users.deleteUser(id);
+
     await prisma.teacher.delete({
       where: {
         id,

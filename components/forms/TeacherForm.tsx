@@ -197,7 +197,10 @@ const TeacherForm = ({ type, setOpen, data, relatedData }: Props) => {
           }}
         </CldUploadWidget>
       </div>
-      <button className="bg-blue-400 text-white p-2 rounded-md">
+      <button
+        disabled={pending}
+        className="bg-blue-400 text-white p-2 rounded-md"
+      >
         {type === "create" ? "Crear" : "Actualizar"}
       </button>
     </form>
