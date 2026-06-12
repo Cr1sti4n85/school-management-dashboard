@@ -20,7 +20,8 @@ export const teacherSchema = z.object({
     .regex(/[A-Z]/, { message: "Debe contener al menos una letra mayúscula" })
     .regex(/[^a-zA-Z0-9]/, {
       message: "Debe contener al menos un carácter especial",
-    }),
+    })
+    .or(z.literal("")),
   name: z.string().min(1, { message: "El nombre es obligatorio" }),
   surname: z.string().min(1, { message: "El apellido es obligatorio" }),
   phone: z

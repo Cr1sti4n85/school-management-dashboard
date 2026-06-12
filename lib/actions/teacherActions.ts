@@ -55,12 +55,38 @@ export const updateTeacher = async (
   initialState: InitialState,
   data: z.infer<typeof teacherSchema>,
 ) => {
+  if (!data.id)
+    return { success: false, message: "Error al actualizar maestro" };
   try {
+    const client = await clerkClient();
+
+    await client.users.updateUser(data.id, {
+      username: data.username,
+      ...(data.password !== "" && { password: data.password }),
+      firstName: data.name,
+      lastName: data.surname,
+    });
+
     await prisma.teacher.update({
       where: {
         id: data.id,
       },
-      data,
+      data: {
+        username: data.username,
+        name: data.name,
+        surname: data.surname,
+        email: data.email || null,
+        phone: data.phone || null,
+        address: data.address,
+        img: data.img || null,
+        bloodType: data.bloodType,
+        birthday: data.birthday,
+        subjects: {
+          connect: data.subjects?.map((subjectId: string) => ({
+            id: parseInt(subjectId),
+          })),
+        },
+      },
     });
 
     revalidatePath("/list/teachers");

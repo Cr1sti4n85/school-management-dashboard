@@ -82,16 +82,15 @@ const TeacherForm = ({ type, setOpen, data, relatedData }: Props) => {
           defaultValue={data?.email}
           error={errors.email}
         />
-        {type === "create" && (
-          <InputField
-            label="Password"
-            register={register}
-            name="password"
-            type="password"
-            defaultValue={data?.password}
-            error={errors.password}
-          />
-        )}
+
+        <InputField
+          label="Password"
+          register={register}
+          name="password"
+          type="password"
+          defaultValue={data?.password}
+          error={errors.password}
+        />
       </div>
       <span className="text-xs text-gray-400 font-medium">
         Información personal
