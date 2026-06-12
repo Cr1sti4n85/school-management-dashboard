@@ -1,11 +1,24 @@
-import Announcements from "@/components/Announcements";
-import BigCalendar from "@/components/BigCalendar";
-import Performance from "@/components/Performance";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { notFound } from "next/navigation";
+import BigCalendar from "@/components/BigCalendar";
+import Performance from "@/components/Performance";
+import Announcements from "@/components/Announcements";
+import { getTeacherById } from "@/lib/queries/teacherQueries";
+import FormContainer from "@/components/FormContainer";
+import { getSessionObj } from "@/lib/queries/getSession";
 
-const SingleTeacherPage = () => {
+const SingleTeacherPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const { id } = await params;
+  const { role } = await getSessionObj();
+  const teacher = await getTeacherById(id);
+
+  if (!teacher) return notFound();
+
   return (
     <section className="flex flex-1 p-4 flex-col xl:flex-row gap-4">
       {/* LEFT  */}
@@ -16,7 +29,7 @@ const SingleTeacherPage = () => {
             <div className="w-1/3">
               <Image
                 className="w-36 h-36 rounded-full object-cover"
-                src="https://images.pexels.com/photos/2888150/pexels-photo-2888150.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                src={teacher.img || "/noAvatar.png"}
                 alt=""
                 width={144}
                 height={144}
@@ -24,17 +37,17 @@ const SingleTeacherPage = () => {
             </div>
             <div className="w-2/3 flex flex-col justify-between gap-4">
               <div className="flex items-center gap-4">
-                <h1 className="text-xl font-semibold">Leonardo Sanchez</h1>
-                {/* <FormModal
-                  table="teacher"
-                  type="update"
-                  data={data}
-                /> */}
+                <h1 className="text-xl font-semibold">
+                  {teacher.name} {teacher.surname}
+                </h1>
+                {role === "admin" && (
+                  <FormContainer table="teacher" type="update" data={teacher} />
+                )}
               </div>
-              <p className="text-sm text-gray-500">
+              {/* <p className="text-sm text-gray-500">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam
                 excepturi deleniti{" "}
-              </p>
+              </p> */}
               <div className="flex items-center justify-between gap-2 flex-wrap text-xs font-medium">
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
                   <Image
@@ -43,7 +56,7 @@ const SingleTeacherPage = () => {
                     width={14}
                     height={14}
                   />
-                  <span>A+</span>
+                  <span>{teacher.bloodType}</span>
                 </div>
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
                   <Image
@@ -52,7 +65,7 @@ const SingleTeacherPage = () => {
                     width={14}
                     height={14}
                   />
-                  <span>Mayo de 2026</span>
+                  <span>{teacher.birthday.toLocaleDateString()}</span>
                 </div>
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3  flex items-center gap-2">
                   <Image
@@ -61,7 +74,7 @@ const SingleTeacherPage = () => {
                     width={14}
                     height={14}
                   />
-                  <span>rsanchez@example.com</span>
+                  <span>{teacher.email || "-"}</span>
                 </div>
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
                   <Image
@@ -70,7 +83,7 @@ const SingleTeacherPage = () => {
                     width={14}
                     height={14}
                   />
-                  <span>555-333-222</span>
+                  <span>{teacher.phone || "-"}</span>
                 </div>
               </div>
             </div>
@@ -93,14 +106,16 @@ const SingleTeacherPage = () => {
             <div className="bg-white p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]">
               <Image
                 src="/singleBranch.png"
-                alt="branch icon"
+                alt="file icon"
                 width={24}
                 height={24}
                 className="w-6 h-6"
               />
               <div>
-                <h2 className="text-xl font-semibold">2</h2>
-                <span className="text-sm text-gray-400">Branches</span>
+                <h2 className="text-xl font-semibold">
+                  {teacher._count.subjects || 0}
+                </h2>
+                <span className="text-sm text-gray-400">Materia(s)</span>
               </div>
             </div>
             <div className="bg-white p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]">
@@ -112,7 +127,9 @@ const SingleTeacherPage = () => {
                 className="w-6 h-6"
               />
               <div>
-                <h2 className="text-xl font-semibold">6</h2>
+                <h2 className="text-xl font-semibold">
+                  {teacher._count.lessons || 0}
+                </h2>
                 <span className="text-sm text-gray-400">Clases</span>
               </div>
             </div>
@@ -125,7 +142,9 @@ const SingleTeacherPage = () => {
                 className="w-6 h-6"
               />
               <div>
-                <h2 className="text-xl font-semibold">6</h2>
+                <h2 className="text-xl font-semibold">
+                  {teacher._count.classes || 0}
+                </h2>
                 <span className="text-sm text-gray-400">Salones</span>
               </div>
             </div>

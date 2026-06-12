@@ -54,3 +54,29 @@ export const getTeachersAndCount = async (
   ]);
   return { data, count };
 };
+
+export const getTeacherById = async (id: string) => {
+  const teacher:
+    | (Teacher & {
+        _count: {
+          subjects: number;
+          classes: number;
+          lessons: number;
+        };
+      })
+    | null = await prisma.teacher.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      _count: {
+        select: {
+          subjects: true,
+          classes: true,
+          lessons: true,
+        },
+      },
+    },
+  });
+  return teacher;
+};

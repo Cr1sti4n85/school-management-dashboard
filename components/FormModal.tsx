@@ -11,6 +11,7 @@ import { subjectSchema } from "@/zod-schemas/subject";
 import {
   ClassRelatedData,
   SubjectRelatedData,
+  TeacherRelatedData,
 } from "@/lib/queries/relatedDataQuery";
 import { classSchema } from "@/zod-schemas/class";
 
@@ -32,6 +33,7 @@ const forms: {
       type={type}
       setOpen={setOpen}
       data={data as z.infer<typeof teacherSchema>}
+      relatedData={relatedData as TeacherRelatedData}
     />
   ),
   student: (type, setOpen, data, relatedData) => (
@@ -83,7 +85,13 @@ const FormModal = <T, U>({
         className={`flex items-center justify-center rounded-full ${size} ${bgColor}`}
         onClick={() => setOpen(true)}
       >
-        <Image src={`/${type}.png`} alt="action icon" width={16} height={16} />
+        <Image
+          src={`/${type}.png`}
+          alt="action icon"
+          width={20}
+          height={20}
+          className="cursor-pointer"
+        />
       </button>
       {open && (
         <div className="z-50 flex items-center justify-center w-screen h-screen absolute left-0 top-0 bg-black/60">
