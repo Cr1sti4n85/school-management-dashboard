@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import BigCalendar from "@/components/BigCalendar";
 import Performance from "@/components/Performance";
 import Announcements from "@/components/Announcements";
 import { getTeacherById } from "@/lib/queries/teacherQueries";
 import FormContainer from "@/components/FormContainer";
 import { getSessionObj } from "@/lib/queries/getSession";
+import BigCalendarContainer from "@/components/BigCalendarContainer";
 
 const SingleTeacherPage = async ({
   params,
@@ -153,7 +153,7 @@ const SingleTeacherPage = async ({
         {/* BOTTOM  */}
         <div className="mt-4 bg-white rounded-md p-4 h-200">
           <h2>Calendario del profesor</h2>
-          <BigCalendar />
+          <BigCalendarContainer type={"teacherId"} id={teacher.id} />
         </div>
       </div>
       {/* RIGHT */}

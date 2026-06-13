@@ -51,3 +51,37 @@ export const getStudentsAndCount = async (
   ]);
   return { data, count };
 };
+
+export const getStudentById = async (id: string) => {
+  const student:
+    | (Student & { class: Class & { _count: { lessons: number } } })
+    | null = await prisma.student.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      class: {
+        include: {
+          _count: { select: { lessons: true } },
+        },
+      },
+    },
+  });
+  return student;
+};
+
+export const getAttendancePercentage = async (id: string) => {
+  const attendance = await prisma.attendance.findMany({
+    where: {
+      studentId: id,
+      date: {
+        gte: new Date(new Date().getFullYear(), 0, 1),
+      },
+    },
+  });
+  const totalDays = attendance.length;
+  const daysPresent = attendance.filter((item) => item.present).length;
+  const percentage = (daysPresent / totalDays) * 100;
+
+  return percentage;
+};

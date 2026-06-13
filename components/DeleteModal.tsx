@@ -60,7 +60,7 @@ const DeleteModal = ({ table, setOpen, id }: Props) => {
   }, [state.message, state.success, router, setOpen]);
   return (
     <form action={formAction} className="p-4 flex flex-col gap-4">
-      <input type="text | number" name="id" value={id} readOnly />
+      <input type="text | number" name="id" value={id} readOnly hidden />
       <span className="text-center font-medium">
         Los datos se perderán. ¿Estás seguro que quieres borrar este elemento?
       </span>
