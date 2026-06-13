@@ -30,7 +30,7 @@ export const teacherSchema = z.object({
     .optional(),
   address: z.string().min(5, { message: "Dirección no válido" }),
   bloodType: z.string().min(1, { message: "Campo obligatorio" }),
-  birthday: z.coerce.date({ message: "Fecha de nacimiento obligaotoria" }),
+  birthday: z.coerce.date({ message: "Fecha de nacimiento obligatoria" }),
   img: z.url().optional(),
   subjects: z.array(z.string()).optional(),
 });
