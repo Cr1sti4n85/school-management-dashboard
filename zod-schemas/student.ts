@@ -26,7 +26,7 @@ export const studentSchema = z.object({
     .regex(/^\d{9}$/, { message: "Número de teléfono no válido" }),
   address: z.string().min(5, { message: "Número de teléfono no válido" }),
   bloodType: z.string().min(1, { message: "Campo obligatorio" }),
-  birthday: z.date({ message: "Fecha de nacimiento obligaotoria" }),
+  birthday: z.coerce.date({ message: "Fecha de nacimiento obligatoria" }),
   sex: z.enum(["MALE", "FEMALE"], { message: "Campo obligatorio" }),
   img: z.url().optional(),
   gradeId: z.coerce.number().min(1, { message: "Campo obligatorio" }),

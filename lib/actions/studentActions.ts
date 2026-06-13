@@ -2,7 +2,6 @@
 import z from "zod";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
-import { teacherSchema } from "@/zod-schemas/teacher";
 import { clerkClient } from "@clerk/nextjs/server";
 import { studentSchema } from "@/zod-schemas/student";
 import { getSingleClass } from "../queries/classQueries";
@@ -17,12 +16,13 @@ export const createStudent = async (
   data: z.infer<typeof studentSchema>,
 ) => {
   try {
-    const client = await clerkClient();
     const classItem = await getSingleClass(data.classId);
 
     if (classItem && classItem.capacity === classItem._count.students) {
       return { success: false, message: "El salón no tiene más cupos" };
     }
+    const client = await clerkClient();
+
     const user = await client.users.createUser({
       username: data.username,
       password: data.password,
@@ -73,14 +73,14 @@ export const updateStudent = async (
       lastName: data.lastName,
     });
 
-    await prisma.teacher.update({
+    await prisma.student.update({
       where: {
         id: data.id,
       },
       data: {
         username: data.username,
         name: data.name,
-        surname: data.lastName,
+        lastName: data.lastName,
         email: data.email || null,
         phone: data.phone || null,
         address: data.address,
@@ -96,7 +96,8 @@ export const updateStudent = async (
 
     revalidatePath("/list/students");
     return { success: true, message: "Información actualizada correctamente" };
-  } catch {
+  } catch (error: any) {
+    console.log({ error });
     return { success: false, message: "Error al actualizar estudiante" };
   }
 };

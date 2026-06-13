@@ -7,6 +7,8 @@ import { getStudentById } from "@/lib/queries/studentQueries";
 import BigCalendarContainer from "@/components/BigCalendarContainer";
 import StudentAttendanceCard from "@/components/StudentAttendanceCard";
 import { Suspense } from "react";
+import FormContainer from "@/components/FormContainer";
+import { getSessionObj } from "@/lib/queries/getSession";
 
 const SingleStudentPage = async ({
   params,
@@ -15,6 +17,7 @@ const SingleStudentPage = async ({
 }) => {
   const { id } = await params;
   const student = await getStudentById(id);
+  const { role } = await getSessionObj();
 
   if (!student) return notFound();
   return (
@@ -34,9 +37,14 @@ const SingleStudentPage = async ({
               />
             </div>
             <div className="w-2/3 flex flex-col justify-between gap-4">
-              <h1 className="text-xl font-semibold">
-                {student.name} {student.lastName}
-              </h1>
+              <div className="flex items-center gap-4">
+                <h1 className="text-xl font-semibold">
+                  {student.name} {student.lastName}
+                </h1>
+                {role === "admin" && (
+                  <FormContainer table="student" type="update" data={student} />
+                )}
+              </div>
               {/* <p className="text-sm text-gray-500">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam
                 excepturi deleniti{" "}

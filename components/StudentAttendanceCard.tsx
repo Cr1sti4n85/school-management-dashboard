@@ -5,7 +5,7 @@ const StudentAttendanceCard = async ({ id }: { id: string }) => {
 
   return (
     <div>
-      <h2 className="text-xl font-semibold">{attendance}%</h2>
+      <h2 className="text-xl font-semibold">{attendance || 0}%</h2>
       <span className="text-sm text-gray-400">Asistencia</span>
     </div>
   );

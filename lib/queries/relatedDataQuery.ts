@@ -27,11 +27,27 @@ export type TeacherRelatedData = {
   }[];
 };
 
+export type StudentRelatedData = {
+  grades: {
+    id: number;
+    level: number;
+  }[];
+  classes: {
+    id: number;
+    name: string;
+    capacity: number;
+    _count: {
+      students: number;
+    };
+  }[];
+};
+
 export const getRelatedData = async (type: string, table: string) => {
   let relatedData:
     | SubjectRelatedData
     | ClassRelatedData
     | TeacherRelatedData
+    | StudentRelatedData
     | null = null;
 
   if (type !== "delete") {
@@ -55,8 +71,16 @@ export const getRelatedData = async (type: string, table: string) => {
         const teacherSubjects = await prisma.subject.findMany({
           select: { id: true, name: true },
         });
-
         relatedData = { subjects: teacherSubjects };
+        break;
+      case "student":
+        const studentGrades = await prisma.grade.findMany({
+          select: { id: true, level: true },
+        });
+        const studentClasses = await prisma.class.findMany({
+          include: { _count: { select: { students: true } } },
+        });
+        relatedData = { grades: studentGrades, classes: studentClasses };
         break;
 
       default:
