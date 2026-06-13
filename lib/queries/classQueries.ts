@@ -57,3 +57,15 @@ export const getClassByStudentId = async (id: string) => {
   });
   return singleClass;
 };
+
+export const getSingleClass = async (id: number) => {
+  const classItem = await prisma.class.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      _count: { select: { students: true } },
+    },
+  });
+  return classItem;
+};
