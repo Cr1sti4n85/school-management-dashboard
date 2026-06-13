@@ -1,10 +1,22 @@
-import Announcements from "@/components/Announcements";
-import BigCalendar from "@/components/BigCalendar";
-import Performance from "@/components/Performance";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import Announcements from "@/components/Announcements";
+import Performance from "@/components/Performance";
+import { getStudentById } from "@/lib/queries/studentQueries";
+import BigCalendarContainer from "@/components/BigCalendarContainer";
+import StudentAttendanceCard from "@/components/StudentAttendanceCard";
+import { Suspense } from "react";
 
-const SingleStudentPage = () => {
+const SingleStudentPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const { id } = await params;
+  const student = await getStudentById(id);
+
+  if (!student) return notFound();
   return (
     <section className="flex flex-1 p-4 flex-col xl:flex-row gap-4">
       {/* LEFT  */}
@@ -15,18 +27,20 @@ const SingleStudentPage = () => {
             <div className="w-1/3">
               <Image
                 className="w-36 h-36 rounded-full object-cover"
-                src="https://images.pexels.com/photos/936126/pexels-photo-936126.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                alt=""
+                src={student.img || "/noAvatar.png"}
+                alt="student avatar"
                 width={144}
                 height={144}
               />
             </div>
             <div className="w-2/3 flex flex-col justify-between gap-4">
-              <h1 className="text-xl font-semibold">Virginia Reginato</h1>
-              <p className="text-sm text-gray-500">
+              <h1 className="text-xl font-semibold">
+                {student.name} {student.lastName}
+              </h1>
+              {/* <p className="text-sm text-gray-500">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam
                 excepturi deleniti{" "}
-              </p>
+              </p> */}
               <div className="flex items-center justify-between gap-2 flex-wrap text-xs font-medium">
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
                   <Image
@@ -35,7 +49,7 @@ const SingleStudentPage = () => {
                     width={14}
                     height={14}
                   />
-                  <span>A+</span>
+                  <span>{student.bloodType}</span>
                 </div>
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
                   <Image
@@ -44,7 +58,7 @@ const SingleStudentPage = () => {
                     width={14}
                     height={14}
                   />
-                  <span>Mayo de 2026</span>
+                  <span>{student.birthday.toLocaleDateString()}</span>
                 </div>
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3  flex items-center gap-2">
                   <Image
@@ -53,7 +67,7 @@ const SingleStudentPage = () => {
                     width={14}
                     height={14}
                   />
-                  <span>vreginato@example.com</span>
+                  <span>{student.email || "-"}</span>
                 </div>
                 <div className="w-full md:w-1/3 lg:w-full 2xl:w-1/3 flex items-center gap-2">
                   <Image
@@ -62,7 +76,7 @@ const SingleStudentPage = () => {
                     width={14}
                     height={14}
                   />
-                  <span>555-333-222</span>
+                  <span>{student.phone || "-"}</span>
                 </div>
               </div>
             </div>
@@ -77,10 +91,9 @@ const SingleStudentPage = () => {
                 height={24}
                 className="w-6 h-6"
               />
-              <div>
-                <h2 className="text-xl font-semibold">90%</h2>
-                <span className="text-sm text-gray-400">Asistencia</span>
-              </div>
+              <Suspense fallback="Cargando...">
+                <StudentAttendanceCard id={student.id} />
+              </Suspense>
             </div>
             <div className="bg-white p-4 rounded-md flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]">
               <Image
@@ -91,7 +104,9 @@ const SingleStudentPage = () => {
                 className="w-6 h-6"
               />
               <div>
-                <h2 className="text-xl font-semibold">6</h2>
+                <h2 className="text-xl font-semibold">
+                  {`${student.class.name.charAt(0)}°`}
+                </h2>
                 <span className="text-sm text-gray-400">Nivel</span>
               </div>
             </div>
@@ -104,7 +119,9 @@ const SingleStudentPage = () => {
                 className="w-6 h-6"
               />
               <div>
-                <h2 className="text-xl font-semibold">12</h2>
+                <h2 className="text-xl font-semibold">
+                  {student.class._count.lessons}
+                </h2>
                 <span className="text-sm text-gray-400">Clases</span>
               </div>
             </div>
@@ -117,7 +134,7 @@ const SingleStudentPage = () => {
                 className="w-6 h-6"
               />
               <div>
-                <h2 className="text-xl font-semibold">6A</h2>
+                <h2 className="text-xl font-semibold">{student.class.name}</h2>
                 <span className="text-sm text-gray-400">Salón</span>
               </div>
             </div>
@@ -126,7 +143,9 @@ const SingleStudentPage = () => {
         {/* BOTTOM  */}
         <div className="mt-4 bg-white rounded-md p-4 h-200">
           <h2>Calendario del estudiante</h2>
-          <BigCalendar />
+          {student.class && (
+            <BigCalendarContainer type={"classId"} id={student.class.id} />
+          )}
         </div>
       </div>
       {/* RIGHT */}
