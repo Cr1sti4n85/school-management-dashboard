@@ -1,6 +1,7 @@
 "use client";
 
 import { deleteClass } from "@/lib/actions/classActions";
+import { deleteExam } from "@/lib/actions/examActions";
 import { deleteStudent } from "@/lib/actions/studentActions";
 import { deleteSubject } from "@/lib/actions/subjectActions";
 import { deleteTeacher } from "@/lib/actions/teacherActions";
@@ -14,7 +15,7 @@ const deleteActionMap = {
   class: deleteClass,
   teacher: deleteTeacher,
   student: deleteStudent,
-  exam: deleteSubject,
+  exam: deleteExam,
   parent: deleteSubject,
   lesson: deleteSubject,
   assignment: deleteSubject,

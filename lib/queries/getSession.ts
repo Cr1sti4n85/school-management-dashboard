@@ -6,6 +6,7 @@ export const getSessionObj = async (): Promise<{
 }> => {
   const { sessionClaims, userId } = await auth();
   const role = (sessionClaims?.metadata as { role: string })?.role;
+
   return {
     userId,
     role,
