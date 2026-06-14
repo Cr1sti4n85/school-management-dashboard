@@ -85,3 +85,12 @@ export const getAttendancePercentage = async (id: string) => {
 
   return percentage;
 };
+
+export const getStudentsByParent = async (id: string) => {
+  const students = await prisma.student.findMany({
+    where: {
+      parentId: id,
+    },
+  });
+  return students;
+};
