@@ -96,8 +96,7 @@ export const updateStudent = async (
 
     revalidatePath("/list/students");
     return { success: true, message: "Información actualizada correctamente" };
-  } catch (error: any) {
-    console.log({ error });
+  } catch {
     return { success: false, message: "Error al actualizar estudiante" };
   }
 };

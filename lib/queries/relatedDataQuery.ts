@@ -1,4 +1,5 @@
 import { prisma } from "../prisma";
+import { getSessionObj } from "./getSession";
 
 export type SubjectRelatedData = {
   teachers: {
@@ -42,12 +43,20 @@ export type StudentRelatedData = {
   }[];
 };
 
+export type ExamRelatedData = {
+  lessons: {
+    id: number;
+    name: string;
+  }[];
+};
+
 export const getRelatedData = async (type: string, table: string) => {
   let relatedData:
     | SubjectRelatedData
     | ClassRelatedData
     | TeacherRelatedData
     | StudentRelatedData
+    | ExamRelatedData
     | null = null;
 
   if (type !== "delete") {
@@ -82,7 +91,19 @@ export const getRelatedData = async (type: string, table: string) => {
         });
         relatedData = { grades: studentGrades, classes: studentClasses };
         break;
-
+      case "exam":
+        const { role, userId } = await getSessionObj();
+        const examLessons = await prisma.lesson.findMany({
+          where: {
+            ...(role === "teacher" ? { teacherId: userId! } : {}),
+          },
+          select: {
+            id: true,
+            name: true,
+          },
+        });
+        relatedData = { lessons: examLessons };
+        break;
       default:
         break;
     }

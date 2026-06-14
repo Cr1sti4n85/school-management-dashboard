@@ -82,3 +82,14 @@ export const getTeachersLessons = async (
   }));
   return formattedData;
 };
+
+//EXAMS
+export const getLessonByTeacher = async (userId: string, lessonId: number) => {
+  const teacherLesson = await prisma.lesson.findFirst({
+    where: {
+      id: lessonId,
+      teacherId: userId,
+    },
+  });
+  return teacherLesson;
+};
