@@ -9,6 +9,7 @@ import { teacherSchema } from "@/zod-schemas/teacher";
 import { studentSchema } from "@/zod-schemas/student";
 import { subjectSchema } from "@/zod-schemas/subject";
 import {
+  AssignmentRelatedData,
   ClassRelatedData,
   ExamRelatedData,
   StudentRelatedData,
@@ -17,12 +18,14 @@ import {
 } from "@/lib/queries/relatedDataQuery";
 import { classSchema } from "@/zod-schemas/class";
 import { examSchema } from "@/zod-schemas/exam";
+import { assignmentSchema } from "@/zod-schemas/assignment";
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"));
 const StudentForm = dynamic(() => import("./forms/StudentForm"));
 const SubjectForm = dynamic(() => import("./forms/SubjectForm"));
 const ClassForm = dynamic(() => import("./forms/ClassForm"));
 const ExamForm = dynamic(() => import("./forms/ExamForm"));
+const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"));
 
 const forms: {
   [key: string]: (
@@ -70,6 +73,14 @@ const forms: {
       setOpen={setOpen}
       data={data as z.infer<typeof examSchema>}
       relatedData={relatedData as ExamRelatedData}
+    />
+  ),
+  assignment: (type, setOpen, data, relatedData) => (
+    <AssignmentForm
+      type={type}
+      setOpen={setOpen}
+      data={data as z.infer<typeof assignmentSchema>}
+      relatedData={relatedData as AssignmentRelatedData}
     />
   ),
 };
