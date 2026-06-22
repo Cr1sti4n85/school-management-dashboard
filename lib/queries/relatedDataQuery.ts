@@ -50,6 +50,13 @@ export type ExamRelatedData = {
   }[];
 };
 
+export type AssignmentRelatedData = {
+  lessons: {
+    id: number;
+    name: string;
+  }[];
+};
+
 export const getRelatedData = async (type: string, table: string) => {
   let relatedData:
     | SubjectRelatedData
@@ -57,9 +64,12 @@ export const getRelatedData = async (type: string, table: string) => {
     | TeacherRelatedData
     | StudentRelatedData
     | ExamRelatedData
+    | AssignmentRelatedData
     | null = null;
 
   if (type !== "delete") {
+    const { role, userId } = await getSessionObj();
+
     switch (table) {
       case "subject":
         const subjectTeachers = await prisma.teacher.findMany({
@@ -92,7 +102,6 @@ export const getRelatedData = async (type: string, table: string) => {
         relatedData = { grades: studentGrades, classes: studentClasses };
         break;
       case "exam":
-        const { role, userId } = await getSessionObj();
         const examLessons = await prisma.lesson.findMany({
           where: {
             ...(role === "teacher" ? { teacherId: userId! } : {}),
@@ -103,6 +112,18 @@ export const getRelatedData = async (type: string, table: string) => {
           },
         });
         relatedData = { lessons: examLessons };
+        break;
+      case "assignment":
+        const assignmentLessons = await prisma.lesson.findMany({
+          where: {
+            ...(role === "teacher" ? { teacherId: userId! } : {}),
+          },
+          select: {
+            id: true,
+            name: true,
+          },
+        });
+        relatedData = { lessons: assignmentLessons };
         break;
       default:
         break;
