@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteAnnouncement } from "@/lib/actions/announcementActions";
 import { deleteAssignment } from "@/lib/actions/assignmentActions";
 import { deleteClass } from "@/lib/actions/classActions";
 import { deleteExam } from "@/lib/actions/examActions";
@@ -23,7 +24,7 @@ const deleteActionMap = {
   result: deleteSubject,
   attendance: deleteSubject,
   event: deleteSubject,
-  announcement: deleteSubject,
+  announcement: deleteAnnouncement,
 };
 
 type Props = {

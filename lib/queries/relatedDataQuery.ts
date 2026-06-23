@@ -57,6 +57,13 @@ export type AssignmentRelatedData = {
   }[];
 };
 
+export type AnnouncementRelatedData = {
+  classes: {
+    id: number;
+    name: string;
+  }[];
+};
+
 export const getRelatedData = async (type: string, table: string) => {
   let relatedData:
     | SubjectRelatedData
@@ -65,6 +72,7 @@ export const getRelatedData = async (type: string, table: string) => {
     | StudentRelatedData
     | ExamRelatedData
     | AssignmentRelatedData
+    | AnnouncementRelatedData
     | null = null;
 
   if (type !== "delete") {
@@ -124,6 +132,15 @@ export const getRelatedData = async (type: string, table: string) => {
           },
         });
         relatedData = { lessons: assignmentLessons };
+        break;
+      case "announcement":
+        const announcementClasses = await prisma.class.findMany({
+          select: {
+            id: true,
+            name: true,
+          },
+        });
+        relatedData = { classes: announcementClasses };
         break;
       default:
         break;
