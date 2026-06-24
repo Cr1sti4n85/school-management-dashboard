@@ -1,4 +1,4 @@
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -73,9 +73,11 @@ const ParentsListPage = async ({
         <td className="hidden md:table-cell">{obj.address}</td>
         <td>
           <div className="flex items-center gap-2">
-            <FormModal type="update" table="parent" data={obj} />
             {role === "admin" && (
-              <FormModal type="delete" table="parent" id={obj.id} />
+              <>
+                <FormContainer type="update" table="parent" data={obj} />
+                <FormContainer type="delete" table="parent" id={obj.id} />
+              </>
             )}
           </div>
         </td>
@@ -96,7 +98,7 @@ const ParentsListPage = async ({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-regular">
               <Image src="/sort.png" alt="filter" width={14} height={14} />
             </button>
-            {role === "admin" && <FormModal type="create" table="parent" />}
+            {role === "admin" && <FormContainer type="create" table="parent" />}
           </div>
         </div>
       </div>
