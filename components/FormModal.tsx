@@ -9,8 +9,10 @@ import { teacherSchema } from "@/zod-schemas/teacher";
 import { studentSchema } from "@/zod-schemas/student";
 import { subjectSchema } from "@/zod-schemas/subject";
 import {
+  AnnouncementRelatedData,
   AssignmentRelatedData,
   ClassRelatedData,
+  EventRelatedData,
   ExamRelatedData,
   StudentRelatedData,
   SubjectRelatedData,
@@ -19,6 +21,8 @@ import {
 import { classSchema } from "@/zod-schemas/class";
 import { examSchema } from "@/zod-schemas/exam";
 import { assignmentSchema } from "@/zod-schemas/assignment";
+import { announcementSchema } from "@/zod-schemas/announcement";
+import { eventSchema } from "@/zod-schemas/event";
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"));
 const StudentForm = dynamic(() => import("./forms/StudentForm"));
@@ -26,6 +30,8 @@ const SubjectForm = dynamic(() => import("./forms/SubjectForm"));
 const ClassForm = dynamic(() => import("./forms/ClassForm"));
 const ExamForm = dynamic(() => import("./forms/ExamForm"));
 const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"));
+const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"));
+const EventForm = dynamic(() => import("./forms/EventForm"));
 
 const forms: {
   [key: string]: (
@@ -81,6 +87,22 @@ const forms: {
       setOpen={setOpen}
       data={data as z.infer<typeof assignmentSchema>}
       relatedData={relatedData as AssignmentRelatedData}
+    />
+  ),
+  announcement: (type, setOpen, data, relatedData) => (
+    <AnnouncementForm
+      type={type}
+      setOpen={setOpen}
+      data={data as z.infer<typeof announcementSchema>}
+      relatedData={relatedData as AnnouncementRelatedData}
+    />
+  ),
+  event: (type, setOpen, data, relatedData) => (
+    <EventForm
+      type={type}
+      setOpen={setOpen}
+      data={data as z.infer<typeof eventSchema>}
+      relatedData={relatedData as EventRelatedData}
     />
   ),
 };
