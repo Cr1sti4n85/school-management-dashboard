@@ -71,6 +71,21 @@ export type EventRelatedData = {
   }[];
 };
 
+export type LessonRelatedData = {
+  classes: {
+    id: number;
+    name: string;
+  }[];
+  subjects: {
+    id: number;
+    name: string;
+  }[];
+  teachers: {
+    id: string;
+    name: string;
+  }[];
+};
+
 export const getRelatedData = async (type: string, table: string) => {
   let relatedData:
     | SubjectRelatedData
@@ -81,6 +96,7 @@ export const getRelatedData = async (type: string, table: string) => {
     | AssignmentRelatedData
     | AnnouncementRelatedData
     | EventRelatedData
+    | LessonRelatedData
     | null = null;
 
   if (type !== "delete") {
@@ -158,6 +174,31 @@ export const getRelatedData = async (type: string, table: string) => {
           },
         });
         relatedData = { classes: eventClasses };
+        break;
+      case "lesson":
+        const lessonClasses = await prisma.class.findMany({
+          select: {
+            id: true,
+            name: true,
+          },
+        });
+        const lessonSubjects = await prisma.subject.findMany({
+          select: {
+            id: true,
+            name: true,
+          },
+        });
+        const lessonTeachers = await prisma.teacher.findMany({
+          select: {
+            id: true,
+            name: true,
+          },
+        });
+        relatedData = {
+          classes: lessonClasses,
+          subjects: lessonSubjects,
+          teachers: lessonTeachers,
+        };
         break;
       default:
         break;

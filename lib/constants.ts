@@ -40,3 +40,5 @@ export const attendanceMap: {
   Thu: { present: 0, absent: 0 },
   Fri: { present: 0, absent: 0 },
 };
+
+export const weekDays = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];

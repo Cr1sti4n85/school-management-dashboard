@@ -117,6 +117,16 @@ const ParentForm = ({ type, setOpen, data }: Props) => {
           defaultValue={data?.address}
           error={errors.address}
         />
+        {data && (
+          <InputField
+            label="Id"
+            name="id"
+            defaultValue={data?.id?.toString()}
+            register={register}
+            error={errors?.id}
+            hidden
+          />
+        )}
       </div>
       <button
         disabled={pending}
