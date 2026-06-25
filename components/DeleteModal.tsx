@@ -5,6 +5,7 @@ import { deleteAssignment } from "@/lib/actions/assignmentActions";
 import { deleteClass } from "@/lib/actions/classActions";
 import { deleteEvent } from "@/lib/actions/eventActions";
 import { deleteExam } from "@/lib/actions/examActions";
+import { deleteLesson } from "@/lib/actions/lessonActions";
 import { deleteParent } from "@/lib/actions/parentActions";
 import { deleteStudent } from "@/lib/actions/studentActions";
 import { deleteSubject } from "@/lib/actions/subjectActions";
@@ -21,7 +22,7 @@ const deleteActionMap = {
   student: deleteStudent,
   exam: deleteExam,
   parent: deleteParent,
-  lesson: deleteSubject,
+  lesson: deleteLesson,
   assignment: deleteAssignment,
   result: deleteSubject,
   attendance: deleteSubject,

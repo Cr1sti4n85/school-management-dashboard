@@ -1,4 +1,4 @@
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -58,8 +58,8 @@ const LessonsListPage = async ({
           <div className="flex items-center gap-2">
             {role === "admin" && (
               <>
-                <FormModal type="update" table="assignment" data={obj} />
-                <FormModal type="delete" table="assignment" id={obj.id} />
+                <FormContainer type="update" table="lesson" data={obj} />
+                <FormContainer type="delete" table="lesson" id={obj.id} />
               </>
             )}
           </div>
@@ -82,7 +82,7 @@ const LessonsListPage = async ({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-regular">
               <Image src="/sort.png" alt="filter" width={14} height={14} />
             </button>
-            {role === "admin" && <FormModal type="create" table="lesson" />}
+            {role === "admin" && <FormContainer type="create" table="lesson" />}
           </div>
         </div>
       </div>

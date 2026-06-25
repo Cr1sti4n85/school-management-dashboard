@@ -14,6 +14,7 @@ import {
   ClassRelatedData,
   EventRelatedData,
   ExamRelatedData,
+  LessonRelatedData,
   StudentRelatedData,
   SubjectRelatedData,
   TeacherRelatedData,
@@ -24,6 +25,7 @@ import { assignmentSchema } from "@/zod-schemas/assignment";
 import { announcementSchema } from "@/zod-schemas/announcement";
 import { eventSchema } from "@/zod-schemas/event";
 import { parentSchema } from "@/zod-schemas/parent";
+import { lessonSchema } from "@/zod-schemas/lesson";
 
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"));
 const StudentForm = dynamic(() => import("./forms/StudentForm"));
@@ -34,6 +36,7 @@ const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"));
 const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"));
 const EventForm = dynamic(() => import("./forms/EventForm"));
 const ParentForm = dynamic(() => import("./forms/ParentForm"));
+const LessonForm = dynamic(() => import("./forms/LessonForm"));
 
 const forms: {
   [key: string]: (
@@ -112,6 +115,14 @@ const forms: {
       type={type}
       setOpen={setOpen}
       data={data as z.infer<typeof parentSchema>}
+    />
+  ),
+  lesson: (type, setOpen, data, relatedData) => (
+    <LessonForm
+      type={type}
+      setOpen={setOpen}
+      data={data as z.infer<typeof lessonSchema>}
+      relatedData={relatedData as LessonRelatedData}
     />
   ),
 };
